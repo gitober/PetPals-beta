@@ -1,0 +1,49 @@
+/* Beta: corner badge shown on every page */
+.beta-banner {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(420px, calc(100vw - 24px));
+  padding: 8px 14px;
+  border: 2px solid #D6BAFF;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.95);
+  color: #5b3c8c;
+  font-size: 13px;
+  line-height: 1.3;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(120, 80, 180, 0.15);
+}
+
+.beta-banner:hover {
+  background-color: #f3eaff;
+}
+
+.beta-banner__tag {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background-color: #a777f0;
+  color: #fff;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+}
+
+.beta-banner--collapsed {
+  padding: 6px;
+}
+
+@media screen and (max-width: 600px) {
+  .beta-banner {
+    top: 8px;
+    right: 8px;
+    font-size: 11px;
+    padding: 6px 10px;
+  }
+}

@@ -7,11 +7,13 @@ import Settings from "./pages/settings";
 import UserProfile from "./pages/user-profile.js";
 import Signup from "./features/sign-up/hooks/useSignUp";
 import { UserProvider } from "./features/user-context/hooks/UserContext";
+import BetaBanner from "./features/beta/components/BetaBanner";
 
 function App() {
   return (
       <BrowserRouter>
         <UserProvider>
+          <BetaBanner />
           <Routes>
             <Route index element={<Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
