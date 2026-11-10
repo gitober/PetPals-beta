@@ -5,6 +5,7 @@ const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const { formatProfilePicture } = require("../utils/imageHelpers");
 const { createToken, createRefreshToken, refreshAccessToken } = require("../utils/authHelpers");
+const { deleteTestUser } = require("../utils/testUserCleanup");
 
 // Beta: how long a test account lives before it is cleaned up (1 hour)
 const TEST_USER_LIFETIME_MS = 60 * 60 * 1000;
@@ -434,6 +435,9 @@ const unfollowUser = async (req, res) => {
 // Logout a user by clearing the refresh token cookie
 const logoutUser = async (req, res) => {
   try {
+      // Beta: a test account and all its data is removed on sign out
+      const removed = await deleteTestUser(req.user._id);
+
       // Clear the refresh token cookie
       res.clearCookie('refreshToken', {
           httpOnly: true,
@@ -441,7 +445,7 @@ const logoutUser = async (req, res) => {
           sameSite: 'strict',
       });
 
-      res.status(200).json({ message: "Logout successful" });
+      res.status(200).json({ message: "Logout successful", testAccountRemoved: removed });
   } catch (error) {
       console.error("Error during logout:", error.message);
       res.status(500).json({ error: "Failed to logout" });

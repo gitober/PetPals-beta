@@ -39,7 +39,7 @@ const forgotPasswordLimiter = rateLimit({
 router.post("/login", loginUser); // Log in a user
 router.post("/signup", signupUser); // Sign up a new user
 router.post("/refresh-token", refreshAccessToken); // Refresh authentication token
-router.post("/logout", logoutUser); // Log out a user
+router.post("/logout", requireAuth, logoutUser); // Log out a user (beta: also removes test accounts)
 
 // ==============================
 // Password Reset Routes

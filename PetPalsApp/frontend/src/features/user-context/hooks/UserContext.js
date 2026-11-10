@@ -82,7 +82,21 @@ export const UserProvider = ({ children }) => {
   }, []);
 
   // Function to handle logout and set the loggedOut state
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    // Beta: tell the backend so it can remove the test account and its data
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      try {
+        await fetch(`${apiUrl}/users/logout`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${accessToken}` },
+          credentials: "include",
+        });
+      } catch (error) {
+        console.error("Error during logout:", error);
+      }
+    }
+
     setLoggedOut(true); // Mark the user as logged out
     localStorage.clear(); // Clear localStorage
     window.location.href = "/login"; // Redirect to login
