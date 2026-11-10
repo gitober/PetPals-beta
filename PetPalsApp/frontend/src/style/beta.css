@@ -47,3 +47,126 @@
     padding: 6px 10px;
   }
 }
+
+/* Beta: test checklist in the bottom right */
+.test-checklist {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1000;
+  width: min(280px, calc(100vw - 32px));
+  border: 2px solid #D6BAFF;
+  border-radius: 12px;
+  background-color: #fff;
+  color: #3d2a5c;
+  font-size: 14px;
+  text-align: left;
+  box-shadow: 0 4px 16px rgba(120, 80, 180, 0.18);
+  overflow: hidden;
+}
+
+.test-checklist__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  background-color: #D6BAFF;
+  color: #fff;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.test-checklist__header:hover {
+  background-color: #c198ff;
+}
+
+.test-checklist__count {
+  padding: 1px 8px;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.3);
+  font-size: 13px;
+}
+
+.test-checklist__body {
+  padding: 10px 14px 14px;
+}
+
+.test-checklist ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.test-checklist li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0;
+}
+
+.test-checklist li.done {
+  color: #9a8bb0;
+  text-decoration: line-through;
+}
+
+.test-checklist__box {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #D6BAFF;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.test-checklist li.done .test-checklist__box {
+  border-color: #a777f0;
+  background-color: #a777f0;
+}
+
+.test-checklist__hint {
+  margin: 8px 0 0;
+  color: #9a8bb0;
+  font-size: 12px;
+}
+
+.test-checklist__finish p {
+  margin: 10px 0 8px;
+  font-weight: bold;
+}
+
+.test-checklist__finish button {
+  width: 100%;
+  padding: 9px;
+  border: none;
+  border-radius: 6px;
+  background-color: #a777f0;
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.test-checklist__finish button:hover {
+  background-color: #8f5ce6;
+}
+
+@media screen and (max-width: 600px) {
+  .test-checklist {
+    right: 8px;
+    bottom: 8px;
+    font-size: 12px;
+  }
+
+  .test-checklist__header {
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+}

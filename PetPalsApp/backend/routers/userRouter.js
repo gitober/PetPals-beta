@@ -2,6 +2,8 @@ const express = require("express");
 const requireAuth = require("../middleware/requireAuth");
 const upload = require("../utils/multerConfig");
 const User = require("../models/userModel");
+const Post = require("../models/postModel");
+const Comment = require("../models/commentModel");
 const rateLimit = require("express-rate-limit");
 
 const {
@@ -106,6 +108,37 @@ router.get("/me", requireAuth, async (req, res) => {
   } catch (error) {
     console.error("Error in /users/me:", error.message);
     res.status(500).json({ error: "Failed to fetch user details" });
+  }
+});
+
+// Beta: which test-checklist tasks this user has done, worked out from their data
+router.get("/me/progress", requireAuth, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const [user, hasPost, hasLike, hasComment] = await Promise.all([
+      User.findById(userId).select("bioText profilePicture following"),
+      Post.exists({ user_id: userId }),
+      Post.exists({ likes: userId }),
+      Comment.exists({ user_id: userId }),
+    ]);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json({
+      loggedIn: true,
+      posted: Boolean(hasPost),
+      liked: Boolean(hasLike),
+      commented: Boolean(hasComment),
+      followed: user.following.length > 0,
+      editedProfile:
+        Boolean(user.bioText) ||
+        (Boolean(user.profilePicture) && user.profilePicture !== "placeholder-image.png"),
+    });
+  } catch (error) {
+    console.error("Error in /users/me/progress:", error.message);
+    res.status(500).json({ error: "Failed to fetch progress" });
   }
 });
 
