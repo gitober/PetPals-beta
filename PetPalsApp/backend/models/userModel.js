@@ -48,6 +48,14 @@ const userSchema = new Schema(
         ref: "User",
       },
     ],
+    // Beta: accounts created by testers are temporary and get cleaned up
+    isTestUser: {
+      type: Boolean,
+      default: false,
+    },
+    expiresAt: {
+      type: Date,
+    },
   },
   { timestamps: true }
 );

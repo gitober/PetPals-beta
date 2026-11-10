@@ -6,6 +6,9 @@ const nodemailer = require("nodemailer");
 const { formatProfilePicture } = require("../utils/imageHelpers");
 const { createToken, createRefreshToken, refreshAccessToken } = require("../utils/authHelpers");
 
+// Beta: how long a test account lives before it is cleaned up (1 hour)
+const TEST_USER_LIFETIME_MS = 60 * 60 * 1000;
+
 
 // Signup a user
 const signupUser = async (req, res) => {
@@ -51,6 +54,9 @@ const signupUser = async (req, res) => {
       username: username.toLowerCase(),
       email: email.toLowerCase(),
       password: hashedPassword,
+      // Beta: every new signup is a temporary test account
+      isTestUser: true,
+      expiresAt: new Date(Date.now() + TEST_USER_LIFETIME_MS),
     });
 
     await newUser.save();
