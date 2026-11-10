@@ -32,7 +32,9 @@ export const UserProvider = ({ children }) => {
           console.warn("Access token not found. Redirecting to login...");
         }
         setLoading(false);
-        if (window.location.pathname !== "/login") {
+        // Pages anyone can see without being logged in
+        const publicPages = ["/login", "/thank-you"];
+        if (!publicPages.includes(window.location.pathname)) {
           window.location.href = "/login";
         }
         return;
@@ -85,13 +87,18 @@ export const UserProvider = ({ children }) => {
   const handleLogout = async () => {
     // Beta: tell the backend so it can remove the test account and its data
     const accessToken = localStorage.getItem("accessToken");
+    let testAccountRemoved = false;
     if (accessToken) {
       try {
-        await fetch(`${apiUrl}/users/logout`, {
+        const response = await fetch(`${apiUrl}/users/logout`, {
           method: "POST",
           headers: { Authorization: `Bearer ${accessToken}` },
           credentials: "include",
         });
+        if (response.ok) {
+          const data = await response.json();
+          testAccountRemoved = Boolean(data.testAccountRemoved);
+        }
       } catch (error) {
         console.error("Error during logout:", error);
       }
@@ -99,7 +106,8 @@ export const UserProvider = ({ children }) => {
 
     setLoggedOut(true); // Mark the user as logged out
     localStorage.clear(); // Clear localStorage
-    window.location.href = "/login"; // Redirect to login
+    // Beta: testers see the thank you page, anyone else goes back to login
+    window.location.href = testAccountRemoved ? "/thank-you" : "/login";
   };
 
   return (
