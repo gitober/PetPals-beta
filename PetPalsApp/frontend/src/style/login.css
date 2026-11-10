@@ -108,6 +108,29 @@
     background-color: #c198ff;
 }
 
+/* Beta: demo login button */
+.demo-login-button {
+    width: 100%;
+    padding: clamp(10px, 1.6vw, 16px);
+    border: 2px solid #D6BAFF;
+    border-radius: 5px;
+    background-color: transparent;
+    color: #a777f0;
+    cursor: pointer;
+    font-size: clamp(14px, 2vw, 22px);
+    font-weight: bold;
+    margin-top: clamp(8px, 1vw, 14px);
+}
+
+.demo-login-button:hover:not(:disabled) {
+    background-color: #f3eaff;
+}
+
+.demo-login-button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
 /* Links and Buttons */
 .forgot,
 .signUp,

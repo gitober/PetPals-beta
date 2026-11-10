@@ -21,6 +21,8 @@ function Login() {
     setPassword,
     loginDisabled,
     handleLoginSubmit,
+    handleDemoLogin,
+    demoLoading,
     forgotPasswordPopupVisible,
     openForgotPasswordPopup,
     closeForgotPasswordPopup,
@@ -93,6 +95,14 @@ function Login() {
                 value="Submit"
                 disabled={loginDisabled}
               />
+              <button
+                type="button"
+                className="demo-login-button"
+                onClick={handleDemoLogin}
+                disabled={demoLoading}
+              >
+                {demoLoading ? "Starting demo..." : "Try as demo user"}
+              </button>
               {error && <p className="login-error-message">{error}</p>}
               <p
                 className="ForgotPassword"

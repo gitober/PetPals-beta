@@ -70,6 +70,62 @@ const signupUser = async (req, res) => {
   }
 };
 
+// Send tokens and user details after a successful login (shared by login and demo login)
+const sendLoginResponse = (req, res, user) => {
+  const accessToken = createToken(user._id); // Short-lived token
+  const refreshToken = createRefreshToken(user._id); // Long-lived token
+
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+  });
+
+  res.status(200).json({
+    _id: user._id,
+    username: user.username,
+    email: user.email,
+    profilePicture: formatProfilePicture(req, user.profilePicture),
+    createdAt: user.createdAt,
+    isTestUser: user.isTestUser,
+    accessToken,
+  });
+};
+
+// Beta: create a random temporary test account and log straight in
+const demoLogin = async (req, res) => {
+  try {
+    let username;
+    for (let attempt = 0; attempt < 5 && !username; attempt++) {
+      const candidate = `testpal_${crypto.randomInt(1000, 10000)}`;
+      if (!(await User.exists({ username: candidate }))) {
+        username = candidate;
+      }
+    }
+
+    if (!username) {
+      return res.status(503).json({ error: "Could not create a demo account, please try again" });
+    }
+
+    // Nobody ever types this password, it only satisfies the model
+    const hashedPassword = await bcrypt.hash(crypto.randomBytes(24).toString("hex"), 10);
+
+    const user = await User.create({
+      username,
+      email: `${username}@petpals.test`,
+      password: hashedPassword,
+      isTestUser: true,
+      expiresAt: new Date(Date.now() + TEST_USER_LIFETIME_MS),
+    });
+
+    sendLoginResponse(req, res, user);
+  } catch (error) {
+    console.error("Error during demo login:", error.message);
+    res.status(500).json({ error: "Could not create a demo account, please try again" });
+  }
+};
+
 // Login a user
 const loginUser = async (req, res) => {
   const { username, password } = req.body;
@@ -93,27 +149,7 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ error: "Invalid username or password" });
     }
 
-    const accessToken = createToken(user._id); // Short-lived token
-    const refreshToken = createRefreshToken(user._id); // Long-lived token
-
-    console.log("Generated Access Token:", accessToken);
-    console.log("Generated Refresh Token:", refreshToken);
-
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    });
-
-    res.status(200).json({
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-      profilePicture: formatProfilePicture(req, user.profilePicture),
-      createdAt: user.createdAt,
-      accessToken,
-    });
+    sendLoginResponse(req, res, user);
   } catch (error) {
     console.error("Error during login:", error.message);
     res.status(500).json({ error: "An error occurred during login" });
@@ -575,6 +611,7 @@ module.exports = {
   followUser,
   unfollowUser,
   logoutUser,
+  demoLogin,
   forgotPassword,
   resetPassword,
   validatePassword,

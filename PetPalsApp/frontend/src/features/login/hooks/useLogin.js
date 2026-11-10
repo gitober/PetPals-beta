@@ -37,6 +37,51 @@ const useLogin = (apiUrl) => {
     setLoginDisabled(!(username && password));
   }, [username, password]);
 
+  // Save the session and go to the home page
+  const completeLogin = (responseData) => {
+    const accessToken = responseData.accessToken;
+    const userId = responseData._id;
+
+    if (!accessToken || !userId) {
+      throw new Error("Access token or user ID not found in response data");
+    }
+
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("currentUserId", userId);
+    localStorage.setItem("username", responseData.username);
+
+    setContextUsername(responseData.username);
+
+    navigate("/home");
+  };
+
+  // Beta: create a temporary test account and log straight in
+  const [demoLoading, setDemoLoading] = useState(false);
+
+  const handleDemoLogin = async () => {
+    setError("");
+    setDemoLoading(true);
+
+    try {
+      const demoResponse = await fetch(`${apiUrl}/users/demo`, {
+        method: "POST",
+        credentials: "include",
+      });
+      const responseData = await demoResponse.json();
+
+      if (demoResponse.ok) {
+        completeLogin(responseData);
+      } else {
+        setError(responseData.error || "Could not start the demo. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error during demo login:", error.message);
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      setDemoLoading(false);
+    }
+  };
+
   // Handle Login Submission
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
@@ -63,23 +108,7 @@ const useLogin = (apiUrl) => {
       console.log("Login response data:", responseData);
 
       if (loginResponse.ok) {
-        const accessToken = responseData.accessToken;
-        const userId = responseData._id;
-
-        if (accessToken && userId) {
-          console.log("Login successful. Access Token:", accessToken);
-
-          // Store token and userId in localStorage
-          localStorage.setItem("accessToken", accessToken);
-          localStorage.setItem("currentUserId", userId);
-          localStorage.setItem("username", responseData.username);
-
-          setContextUsername(responseData.username);
-
-          navigate("/home");
-        } else {
-          throw new Error("Access token or user ID not found in response data");
-        }
+        completeLogin(responseData);
       } else {
         console.error("Login failed with status:", loginResponse.status);
         setError(responseData.error || "Login failed. Please try again.");
@@ -97,6 +126,8 @@ const useLogin = (apiUrl) => {
     setPassword,
     loginDisabled,
     handleLoginSubmit,
+    handleDemoLogin,
+    demoLoading,
     forgotPasswordPopupVisible,
     openForgotPasswordPopup,
     closeForgotPasswordPopup,

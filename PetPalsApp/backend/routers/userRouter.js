@@ -16,6 +16,7 @@ const {
   followUser,
   unfollowUser,
   logoutUser,
+  demoLogin,
   forgotPassword,
   resetPassword,
   validatePassword,
@@ -38,6 +39,14 @@ const forgotPasswordLimiter = rateLimit({
 // ==============================
 router.post("/login", loginUser); // Log in a user
 router.post("/signup", signupUser); // Sign up a new user
+
+// Beta: one demo account per IP every few minutes, so nobody floods the free database
+const demoLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  max: 3,
+  message: { error: "Too many demo accounts created. Please try again in a few minutes." },
+});
+router.post("/demo", demoLimiter, demoLogin); // Create a temporary test account and log in
 router.post("/refresh-token", refreshAccessToken); // Refresh authentication token
 router.post("/logout", requireAuth, logoutUser); // Log out a user (beta: also removes test accounts)
 
