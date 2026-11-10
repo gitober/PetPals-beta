@@ -9,6 +9,11 @@ const Comment = require("../models/commentModel");
 
 const UPLOADS_DIR = path.join(__dirname, "..", "uploads");
 
+// A test account is removed after this long without activity (1 hour)
+const TEST_USER_LIFETIME_MS = 60 * 60 * 1000;
+// How often the server looks for expired test accounts (10 minutes)
+const SWEEP_INTERVAL_MS = 10 * 60 * 1000;
+
 // Delete an uploaded image file, ignoring placeholders and anything outside uploads/
 const removeUploadedFile = async (imagePath) => {
   if (!imagePath || /^https?:\/\//.test(imagePath)) return;
@@ -60,4 +65,48 @@ const deleteTestUser = async (userId) => {
   return true;
 };
 
-module.exports = { deleteTestUser };
+// Remove every test account whose time has run out
+const removeExpiredTestUsers = async () => {
+  try {
+    const expired = await User.find({ isTestUser: true, expiresAt: { $lt: new Date() } }).select("_id");
+    for (const user of expired) {
+      await deleteTestUser(user._id);
+    }
+    if (expired.length) {
+      console.log(`Beta cleanup: removed ${expired.length} expired test account(s)`);
+    }
+  } catch (error) {
+    console.error("Beta cleanup failed:", error.message);
+  }
+};
+
+// Run once now (also covers the server waking up from sleep) and then on a timer
+const startTestUserSweep = () => {
+  removeExpiredTestUsers();
+  const timer = setInterval(removeExpiredTestUsers, SWEEP_INTERVAL_MS);
+  timer.unref(); // Don't keep the process alive just for this
+};
+
+// Push a test account's expiry forward while it is being used.
+// Only writes to the database when the timer has run down by a few minutes.
+const extendTestUser = async (user) => {
+  if (!user || !user.isTestUser) return;
+
+  const newExpiry = Date.now() + TEST_USER_LIFETIME_MS;
+  const current = user.expiresAt ? user.expiresAt.getTime() : 0;
+  if (newExpiry - current < 5 * 60 * 1000) return;
+
+  try {
+    await User.updateOne({ _id: user._id }, { expiresAt: new Date(newExpiry) });
+  } catch (error) {
+    console.error("Could not extend test account:", error.message);
+  }
+};
+
+module.exports = {
+  TEST_USER_LIFETIME_MS,
+  deleteTestUser,
+  removeExpiredTestUsers,
+  startTestUserSweep,
+  extendTestUser,
+};

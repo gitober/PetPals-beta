@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
+const { extendTestUser } = require("../utils/testUserCleanup");
 
 const requireAuth = async (req, res, next) => {
   const { authorization } = req.headers;
@@ -15,11 +16,14 @@ const requireAuth = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.SECRET); // Verify and decode the token
-    const user = await User.findById(decoded._id).select("_id username");
+    const user = await User.findById(decoded._id).select("_id username isTestUser expiresAt");
 
     if (!user) {
       return res.status(401).json({ error: "User not found" });
     }
+
+    // Beta: keep active test accounts alive (removed after 1 hour without activity)
+    await extendTestUser(user);
 
     req.user = user; // Attach the user object to the request
     next();

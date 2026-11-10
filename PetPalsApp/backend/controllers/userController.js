@@ -5,10 +5,7 @@ const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const { formatProfilePicture } = require("../utils/imageHelpers");
 const { createToken, createRefreshToken, refreshAccessToken } = require("../utils/authHelpers");
-const { deleteTestUser } = require("../utils/testUserCleanup");
-
-// Beta: how long a test account lives before it is cleaned up (1 hour)
-const TEST_USER_LIFETIME_MS = 60 * 60 * 1000;
+const { deleteTestUser, TEST_USER_LIFETIME_MS } = require("../utils/testUserCleanup");
 
 
 // Signup a user
