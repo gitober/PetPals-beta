@@ -15,6 +15,17 @@ const TASKS = [
 ];
 
 const HIDDEN_ON = ["/", "/login", "/signup", "/thank-you"];
+// On phone-sized screens the open checklist covers a lot of the page,
+// so it starts folded there (same breakpoint as the beta styles)
+const SMALL_SCREEN = "(max-width: 600px)";
+
+const startsOpen = () => {
+  try {
+    return !window.matchMedia(SMALL_SCREEN).matches;
+  } catch {
+    return true;
+  }
+};
 // Backup check while nothing happens. Changes the tester makes trigger
 // an instant refresh through API_CHANGE_EVENT instead.
 const REFRESH_MS = 30000;
@@ -26,7 +37,7 @@ const TestChecklist = () => {
   const location = useLocation();
   const { handleLogout } = useContext(UserContext);
   const [progress, setProgress] = useState(null);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(startsOpen);
 
   const hidden = HIDDEN_ON.includes(location.pathname);
 
