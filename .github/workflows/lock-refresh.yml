@@ -1,0 +1,48 @@
+# For branches named deps/...: rebuilds the backend lock file after a
+# package.json change, runs npm audit, and commits both back to the branch.
+name: Refresh backend lock file
+
+on:
+  push:
+    branches: ["deps/**"]
+    paths: ["PetPalsApp/backend/package.json"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: PetPalsApp/backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Rebuild lock file
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+
+      - name: Check the install works and the server code loads
+        run: |
+          npm ci --omit=dev --ignore-scripts=false --no-audit --no-fund
+          node -e "for (const m of ['./app','./scripts/seed','./utils/testUserCleanup']) { require.resolve(m); } console.log('modules resolve')"
+          node -e "require('bcrypt'); require('mongoose'); require('express'); require('multer'); require('nodemailer'); console.log('packages load')"
+
+      - name: Audit (packages that run on the server)
+        run: |
+          npm audit --omit=dev --json > audit-runtime.json || true
+          node -e "const m=require('./audit-runtime.json').metadata.vulnerabilities; console.log(JSON.stringify(m))" | tee audit-summary.txt
+
+      - name: Commit lock file and audit results
+        run: |
+          rm -rf node_modules
+          git config user.name "lock-bot"
+          git config user.email "lock-bot@users.noreply.github.com"
+          git add package-lock.json audit-runtime.json audit-summary.txt
+          git commit -m "Refresh backend lock file and audit [skip ci]" || echo "No changes"
+          git push
