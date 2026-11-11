@@ -1,5 +1,6 @@
 const express = require("express");
 const requireAuth = require("../middleware/requireAuth");
+const requireSelf = require("../middleware/requireSelf");
 const upload = require("../utils/multerConfig");
 const User = require("../models/userModel");
 const Post = require("../models/postModel");
@@ -152,11 +153,12 @@ router.get("/me/progress", requireAuth, async (req, res) => {
 // Individual User Routes
 // ==============================
 router.get("/:username", getUserByUsername); // Get a user's details by username
-router.patch("/:username", requireAuth, updateUserByUsername); // Update user details
-router.patch("/:username/password", requireAuth, updatePasswordByUsername); // Update user's password
+router.patch("/:username", requireAuth, requireSelf, updateUserByUsername); // Update your own details
+router.patch("/:username/password", requireAuth, requireSelf, updatePasswordByUsername); // Update your own password
 router.patch(
   "/:username/profile-picture",
   requireAuth,
+  requireSelf, // Checked before the upload, so nothing is saved for someone else's account
   upload.single("profilePicture"), // Multer middleware for profile picture uploads
   updateProfilePicture // Update a user's profile picture
 );
