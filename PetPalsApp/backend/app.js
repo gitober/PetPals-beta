@@ -51,7 +51,8 @@ app.use(morgan("dev"));
 // CORS middleware
 const allowedOrigins = [
   process.env.FRONTEND_URL, // Frontend URL from environment
-];
+  process.env.RENDER_EXTERNAL_URL, // Beta: Render sets this to the app's own address
+].filter(Boolean);
 
 app.use(
   cors({

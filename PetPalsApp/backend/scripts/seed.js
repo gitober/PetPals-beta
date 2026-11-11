@@ -1,8 +1,8 @@
 // Beta: fills the database with a few pretend pet owners, posts, likes,
 // comments and follows, so testers see a lively feed from the start.
 //
-// Run with:  npm run seed
-// Safe to run again: it removes the old seed data first and recreates it.
+// Run by hand with:  npm run seed   (removes the old seed data and recreates it)
+// The server also adds the pets by itself on startup if they are missing.
 // Test accounts and anything testers made are not touched.
 
 require("dotenv").config();
@@ -76,7 +76,7 @@ const COMMENTS = [
 ];
 
 const removeOldSeed = async () => {
-  const oldUsers = await User.find({ email: { $regex: `${SEED_EMAIL_DOMAIN.replace(".", "\\.")}$` } }).select("_id");
+  const oldUsers = await User.find({ email: SEED_EMAIL_PATTERN }).select("_id");
   const ids = oldUsers.map((user) => user._id);
   if (!ids.length) return;
 
@@ -92,15 +92,10 @@ const removeOldSeed = async () => {
 const pickSome = (items, count) =>
   [...items].sort(() => Math.random() - 0.5).slice(0, count);
 
-const seed = async () => {
-  const mongoURI = process.env.MONGO_URI;
-  if (!mongoURI) {
-    throw new Error("MONGO_URI is missing, add it to backend/.env");
-  }
+const SEED_EMAIL_PATTERN = new RegExp(`${SEED_EMAIL_DOMAIN.replace(".", "\\.")}$`);
 
-  await mongoose.connect(mongoURI);
-  console.log("Connected to MongoDB");
-
+// Create the seed data (expects an open database connection)
+const seedDatabase = async () => {
   await removeOldSeed();
 
   // Seed accounts get a random password, nobody logs in as them
@@ -174,9 +169,33 @@ const seed = async () => {
   console.log(`Created ${users.length} pets, ${savedPosts.length} posts and ${commentCount} comments`);
 };
 
-seed()
-  .catch((error) => {
+// Used by the server on startup: only seeds when the pets are missing
+const ensureSeedData = async () => {
+  try {
+    if (await User.exists({ email: SEED_EMAIL_PATTERN })) return;
+    console.log("No seed pets found, adding them");
+    await seedDatabase();
+  } catch (error) {
     console.error("Seeding failed:", error.message);
-    process.exitCode = 1;
-  })
-  .finally(() => mongoose.disconnect());
+  }
+};
+
+module.exports = { seedDatabase, ensureSeedData };
+
+// When run directly (npm run seed): connect, seed, disconnect
+if (require.main === module) {
+  const mongoURI = process.env.MONGO_URI;
+  if (!mongoURI) {
+    console.error("MONGO_URI is missing, add it to backend/.env");
+    process.exit(1);
+  }
+
+  mongoose
+    .connect(mongoURI)
+    .then(() => seedDatabase())
+    .catch((error) => {
+      console.error("Seeding failed:", error.message);
+      process.exitCode = 1;
+    })
+    .finally(() => mongoose.disconnect());
+}
