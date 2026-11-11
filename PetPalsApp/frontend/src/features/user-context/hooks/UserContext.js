@@ -56,7 +56,9 @@ export const UserProvider = ({ children }) => {
 
         const userData = await response.json();
         setUsername(userData.username || "Unknown User");
-        setBioText(userData.bioText || "Welcome to my page!");
+        // Keep an empty bio empty: pages show their own hint text instead,
+        // so the hint never ends up saved as someone's real bio
+        setBioText(userData.bioText || "");
 
         if (userData.profilePicture) {
           const sanitizedProfilePicture = `${apiUrl}/${userData.profilePicture.replace(/\\/g, "/")}`;

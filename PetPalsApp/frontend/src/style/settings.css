@@ -932,3 +932,17 @@
   min-height: calc(95vh - 100px);
   padding-bottom: 32px;
 }
+
+/* Empty bio: shown as a grey hint, same wording as the profile page */
+.settings-text-hint {
+  color: #999;
+  font-style: italic;
+}
+
+/* Profile picture card: the picture plus button were 19px taller than the
+   space inside the card, pushing its button lower than the others. A slightly
+   smaller picture lets all four buttons sit at the same height. */
+.settings-item.profile .settings-profilepicture {
+  width: 96px;
+  height: 96px;
+}

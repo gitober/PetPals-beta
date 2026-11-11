@@ -178,13 +178,17 @@ const Settings = () => {
 
             {/* Bio */}
             <div className="settings-item">
-              <div className="settings-text">{localBio || "Add a bio"}</div>
+              <div className="settings-text">
+                {localBio || (
+                  <span className="settings-text-hint">Welcome to my profile!</span>
+                )}
+              </div>
               <button
                 className="settings-button"
                 onClick={() =>
                   openSettingsPopup(
                     "Edit Bio",
-                    "Your bio",
+                    "Welcome to my profile!",
                     localBio,
                     "text",
                     (newBio) => {
