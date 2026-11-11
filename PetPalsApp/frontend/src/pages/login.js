@@ -104,6 +104,7 @@ function Login() {
                 {demoLoading ? "Starting demo..." : "Try as demo user"}
               </button>
               {error && <p className="login-error-message">{error}</p>}
+              {/* Beta: password reset is switched off, so the link is hidden
               <p
                 className="ForgotPassword"
                 id="ForgotPasswordLink"
@@ -111,6 +112,7 @@ function Login() {
               >
                 Forgot your password?
               </p>
+              */}
               <p className="signUp" id="signUpLink" onClick={openSignupPopup}>
                 Don't have an account? Sign up
               </p>

@@ -55,8 +55,14 @@ router.post("/logout", requireAuth, logoutUser); // Log out a user (beta: also r
 // ==============================
 // Password Reset Routes
 // ==============================
-router.post("/forgot-password", forgotPasswordLimiter, forgotPassword); // Request a password reset
-router.post("/reset-password", resetPassword); // Reset password using a token
+// Beta: password reset is switched off. Test accounts have made-up emails,
+// so no reset emails are sent. Remove these two lines to switch it back on.
+const notInBeta = (req, res) =>
+  res.status(403).json({ error: "Password reset is not available in the beta." });
+router.post("/forgot-password", forgotPasswordLimiter, notInBeta);
+router.post("/reset-password", notInBeta);
+// router.post("/forgot-password", forgotPasswordLimiter, forgotPassword); // Request a password reset
+// router.post("/reset-password", resetPassword); // Reset password using a token
 
 // ==============================
 // Validation Routes
