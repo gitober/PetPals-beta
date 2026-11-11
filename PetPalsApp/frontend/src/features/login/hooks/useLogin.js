@@ -37,6 +37,24 @@ const useLogin = (apiUrl) => {
     setLoginDisabled(!(username && password));
   }, [username, password]);
 
+  // Beta: if someone was already logged in on this browser (for example they
+  // came back to the login page and tried the demo again), log that account
+  // out on the server, so an old test account isn't left behind.
+  const endPreviousSession = (newUserId) => {
+    const previousToken = localStorage.getItem("accessToken");
+    const previousUserId = localStorage.getItem("currentUserId");
+    if (!previousToken || previousUserId === newUserId) return;
+
+    fetch(`${apiUrl}/users/logout`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${previousToken}` },
+      credentials: "include",
+      keepalive: true,
+    }).catch(() => {
+      // Not critical: an old test account still expires after an hour
+    });
+  };
+
   // Save the session and go to the home page
   const completeLogin = (responseData) => {
     const accessToken = responseData.accessToken;
@@ -45,6 +63,8 @@ const useLogin = (apiUrl) => {
     if (!accessToken || !userId) {
       throw new Error("Access token or user ID not found in response data");
     }
+
+    endPreviousSession(userId);
 
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("currentUserId", userId);
@@ -94,7 +114,6 @@ const useLogin = (apiUrl) => {
       };
 
       const loginUrl = `${apiUrl}/users/login`;
-      console.log("Login URL:", loginUrl);
 
       const loginResponse = await fetch(loginUrl, {
         method: "POST",
@@ -105,7 +124,6 @@ const useLogin = (apiUrl) => {
       });
 
       const responseData = await loginResponse.json();
-      console.log("Login response data:", responseData);
 
       if (loginResponse.ok) {
         completeLogin(responseData);
