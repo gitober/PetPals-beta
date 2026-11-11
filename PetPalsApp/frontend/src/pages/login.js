@@ -24,7 +24,7 @@ function Login() {
     handleDemoLogin,
     demoLoading,
     forgotPasswordPopupVisible,
-    openForgotPasswordPopup,
+    // openForgotPasswordPopup, (beta: link hidden)
     closeForgotPasswordPopup,
     error, // Login error
   } = useLogin(apiUrl);
