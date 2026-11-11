@@ -1027,3 +1027,27 @@
     font-size: 16px;
   }
 }
+/* Line the feed up with the sidebar on wide landscape screens.
+   The sidebar's width grows with the screen (see sidebar.css), but the feed
+   used a fixed offset, so on e.g. 1366x768, 1440x900 and 1536x864 laptops the
+   search bar or post cards slid under the sidebar. These use the same widths
+   as the sidebar, plus a 24px gap. */
+@media screen and (min-width: 933px) and (orientation: landscape) {
+  .home-main-content {
+    --home-offset: calc(clamp(240px, 15vw, 320px) + 24px);
+    margin-left: var(--home-offset);
+    width: calc(100% - var(--home-offset));
+  }
+}
+
+@media screen and (min-width: 960px) and (max-height: 768px) and (orientation: landscape) {
+  .home-main-content {
+    --home-offset: calc(clamp(180px, 15vw, 240px) + 24px);
+  }
+}
+
+@media screen and (min-width: 1960px) and (orientation: landscape) {
+  .home-main-content {
+    --home-offset: calc(clamp(300px, 15vw, 400px) + 24px);
+  }
+}

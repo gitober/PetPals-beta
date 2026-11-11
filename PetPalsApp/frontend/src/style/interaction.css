@@ -202,3 +202,16 @@
     gap: 60px;
   }
 }
+/* Like row: keep the heart and "Likes N" together as one unit, and give
+   the comment icon a little more room, instead of three equal gaps */
+.interaction-container {
+  gap: 6px;
+}
+
+.interaction-container .likes {
+  margin: 0;
+}
+
+.interaction-container .comment-icon {
+  margin-left: 12px;
+}
