@@ -21,6 +21,12 @@ connectDB();
 app.use(
   helmet({
     crossOriginResourcePolicy: false, // Allows cross-origin resource sharing
+    contentSecurityPolicy: {
+      directives: {
+        // Allow image previews (blob:) when choosing a photo for a new post
+        "img-src": ["'self'", "data:", "blob:"],
+      },
+    },
   })
 );
 
@@ -79,18 +85,23 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // API Routes
-app.get("/", (req, res) => res.send("Root of the server!")); // Root route
+// Root route, only when the frontend is not served from here
+if (process.env.NODE_ENV !== "production") {
+  app.get("/", (req, res) => res.send("Root of the server!"));
+}
 app.use("/api/users", userRouter); // User-related routes
 app.use("/api/posts", postRouter); // Post-related routes
 app.use("/api/comments", commentRouter); // Comment-related routes
 
 // Serve frontend static files in production
 if (process.env.NODE_ENV === "production") {
-  const frontendPath = path.join(__dirname, "frontend/build");
+  // The React build lives next to the backend folder: PetPalsApp/frontend/build
+  const frontendPath = path.join(__dirname, "..", "frontend", "build");
   app.use(express.static(frontendPath)); // Serve static frontend files
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(frontendPath, "index.html")); // Serve React's index.html
+  // Any other page (not /api or /uploads) gets React's index.html, so links like /home work
+  app.get(/^\/(?!api\/|uploads\/).*/, (req, res) => {
+    res.sendFile(path.join(frontendPath, "index.html"));
   });
 }
 
