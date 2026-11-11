@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
+import sanitizeImageUrl from "../../../utils/sanitizeImageUrl";
 
 export const UserContext = createContext();
 
@@ -61,7 +62,8 @@ export const UserProvider = ({ children }) => {
         setBioText(userData.bioText || "");
 
         if (userData.profilePicture) {
-          const sanitizedProfilePicture = `${apiUrl}/${userData.profilePicture.replace(/\\/g, "/")}`;
+          // Shared helper, so the picture address isn't given "/api" twice
+          const sanitizedProfilePicture = sanitizeImageUrl(userData.profilePicture, apiUrl);
           setProfilePicture(sanitizedProfilePicture);
           localStorage.setItem("profilePicture", sanitizedProfilePicture);
         } else {
