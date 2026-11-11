@@ -1416,6 +1416,7 @@
 
 /* ...and the comment list takes the space that's left, and scrolls */
 .comment-popup .comment-popup-content {
+  width: 95%;
   flex: 1 1 auto;
   min-height: 80px;
   max-height: none;
@@ -1435,12 +1436,10 @@
   margin-top: 12px;
 }
 
-.submit-comment button {
+.comment-buttons > div,
+.submit-comment button,
+.comment-close-button button {
   margin: 0;
-}
-
-.comment-close-button {
-  margin-top: 0;
 }
 
 /* Like row (profile pages) */
