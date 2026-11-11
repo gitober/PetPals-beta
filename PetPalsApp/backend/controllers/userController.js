@@ -219,7 +219,7 @@ const getUserByUsername = async (req, res) => {
     const user = await User.findOne({ username })
       .populate("followers", "_id username profilePicture") 
       .populate("following", "_id username profilePicture")
-      .select("_id username email profilePicture bioText followers following");
+      .select("_id username profilePicture bioText followers following"); // No email: this profile is public
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
@@ -233,7 +233,6 @@ const getUserByUsername = async (req, res) => {
     res.status(200).json({
       _id: user._id,
       username: user.username,
-      email: user.email,
       bioText: user.bioText,
       profilePicture: formatProfilePicture(req, user.profilePicture),
       followers: user.followers,
