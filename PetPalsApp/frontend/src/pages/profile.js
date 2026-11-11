@@ -289,20 +289,16 @@ const Profile = () => {
                   <div className="profilepage-details-container">
                     <div className="profilepage-username">{username}</div>
                     <div className="profilepage-follower-following">
+                      {/* Same look for both counts; a list only opens when it isn't empty */}
                       <p
-                        onClick={() => handleShowModal("followers")}
-                        style={{ cursor: "pointer" }}
+                        onClick={() => followers > 0 && handleShowModal("followers")}
+                        style={{ cursor: followers > 0 ? "pointer" : "default" }}
                       >
                         {followers} Followers
                       </p>
                       <p
-                        onClick={() =>
-                          following > 0 && handleShowModal("following")
-                        }
-                        style={{
-                          cursor: following > 0 ? "pointer" : "default",
-                          opacity: following > 0 ? 1 : 0.5,
-                        }}
+                        onClick={() => following > 0 && handleShowModal("following")}
+                        style={{ cursor: following > 0 ? "pointer" : "default" }}
                       >
                         {following} Following
                       </p>
@@ -313,6 +309,18 @@ const Profile = () => {
                   </div>
                 </div>
                 <hr className="profilepage-separator" />
+                {feedItems.length === 0 && (
+                  <div className="profilepage-empty">
+                    <p className="profilepage-empty-text">No posts yet.</p>
+                    <button
+                      type="button"
+                      className="profilepage-empty-button"
+                      onClick={openPopupPost}
+                    >
+                      Share your first photo
+                    </button>
+                  </div>
+                )}
                 <div className="profilepage-feed-pictures-container">
                   {feedItems.map((item) => (
                     <div

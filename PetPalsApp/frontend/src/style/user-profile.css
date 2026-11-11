@@ -1230,3 +1230,12 @@
     margin: clamp(30px, 2vw, 50px) 0;
   }
 }
+/* Follower / following counts: dark enough to read on white
+   (same as the own-profile page) */
+.userprofile-follower-following {
+  color: #8f5ce6;
+}
+
+.userprofile-follower-following p:hover {
+  color: #6f3fc4;
+}
