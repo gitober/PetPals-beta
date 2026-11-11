@@ -1359,3 +1359,91 @@
     font-size: 12px;
   }
 }
+/* ==========================================================
+   Layout fix: the post window always fits the screen.
+   Before, the window could be taller than the screen, so Submit, Close
+   and the like button were cut off, and both the window and the comment
+   list scrolled. Now the window is a column where only the comment list
+   grows, shrinks and scrolls; the picture, comment box and buttons stay
+   visible. Placed last so it applies on every screen size.
+   ========================================================== */
+.comment-popup {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  max-height: 90vh;
+  padding: clamp(14px, 3vh, 28px) clamp(14px, 3vw, 32px);
+  overflow: hidden;
+}
+
+/* Mobile browsers: use the height that's actually visible */
+@supports (height: 100dvh) {
+  .comment-popup {
+    max-height: 90dvh;
+  }
+}
+
+/* Everything keeps its size... */
+.comment-popup > * {
+  flex-shrink: 0;
+}
+
+.comment-popup-username p {
+  margin: 0 0 8px;
+}
+
+/* ...the picture is capped so the comments get room */
+.comment-post-image-container {
+  height: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.comment-post-image {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 30vh;
+}
+
+.popUpCommentHeader {
+  margin-bottom: 4px;
+}
+
+.popUpCommentHeader h2 {
+  margin: 12px 0 4px;
+}
+
+/* ...and the comment list takes the space that's left, and scrolls */
+.comment-popup .comment-popup-content {
+  flex: 1 1 auto;
+  min-height: 80px;
+  max-height: none;
+  overflow-y: auto;
+  margin: 6px auto;
+}
+
+/* Comment box as wide as the list above it */
+.comment-input {
+  width: 95%;
+  max-width: none;
+  margin: 10px auto 0;
+}
+
+/* Submit and Close on one line, same height */
+.comment-buttons {
+  margin-top: 12px;
+}
+
+.submit-comment button {
+  margin: 0;
+}
+
+.comment-close-button {
+  margin-top: 0;
+}
+
+/* Like row (profile pages) */
+.comment-popup .interaction-container {
+  margin-top: 12px;
+}
