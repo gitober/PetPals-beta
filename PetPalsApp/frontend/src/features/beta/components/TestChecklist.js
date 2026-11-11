@@ -15,13 +15,14 @@ const TASKS = [
 ];
 
 const HIDDEN_ON = ["/", "/login", "/signup", "/thank-you"];
-// On phone-sized screens the open checklist covers a lot of the page,
-// so it starts folded there (same breakpoint as the beta styles)
-const SMALL_SCREEN = "(max-width: 600px)";
+// On phones and tablets the open checklist covers part of the posts, so it
+// only starts open on wide landscape screens (the sidebar layout, same as the
+// beta badge). Elsewhere it starts as just the "Beta checklist 1/6" bar.
+const WIDE_LAYOUT = "(min-width: 933px) and (orientation: landscape)";
 
 const startsOpen = () => {
   try {
-    return !window.matchMedia(SMALL_SCREEN).matches;
+    return window.matchMedia(WIDE_LAYOUT).matches;
   } catch {
     return true;
   }
