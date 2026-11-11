@@ -1,11 +1,15 @@
 # For branches named deps/...: rebuilds the backend lock file after a
 # package.json change, runs npm audit, and commits both back to the branch.
+# Optional: PetPalsApp/backend/deps-update.txt with one npm command per line
+# (e.g. "install express@4" or "update qs"), run before the lock rebuild.
 name: Refresh backend lock file
 
 on:
   push:
     branches: ["deps/**"]
-    paths: ["PetPalsApp/backend/package.json"]
+    paths:
+      - "PetPalsApp/backend/package.json"
+      - "PetPalsApp/backend/deps-update.txt"
   workflow_dispatch:
 
 permissions:
@@ -24,6 +28,17 @@ jobs:
         with:
           node-version: 22
 
+      - name: Run requested updates
+        run: |
+          if [ -f deps-update.txt ]; then
+            while read -r cmd; do
+              [ -z "$cmd" ] && continue
+              echo "npm $cmd"
+              npm $cmd --package-lock-only --ignore-scripts --no-audit --no-fund
+            done < deps-update.txt
+            git rm -q deps-update.txt
+          fi
+
       - name: Rebuild lock file
         run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
 
@@ -32,6 +47,7 @@ jobs:
           npm ci --omit=dev --ignore-scripts=false --no-audit --no-fund
           node -e "for (const m of ['./app','./scripts/seed','./utils/testUserCleanup']) { require.resolve(m); } console.log('modules resolve')"
           node -e "require('bcrypt'); require('mongoose'); require('express'); require('multer'); require('nodemailer'); console.log('packages load')"
+          node -e "for (const p of ['express','mongoose','bcrypt','nodemailer','validator','jsonwebtoken','morgan']) console.log(p, require(p + '/package.json').version)"
 
       - name: Audit (packages that run on the server)
         run: |
@@ -43,6 +59,6 @@ jobs:
           rm -rf node_modules
           git config user.name "lock-bot"
           git config user.email "lock-bot@users.noreply.github.com"
-          git add package-lock.json audit-runtime.json audit-summary.txt
+          git add package.json package-lock.json audit-runtime.json audit-summary.txt
           git commit -m "Refresh backend lock file and audit [skip ci]" || echo "No changes"
           git push
