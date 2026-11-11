@@ -1,8 +1,10 @@
-/* Beta: corner badge shown on every page */
+/* Beta: badge shown on every page.
+   Top left on phones and tablets (the logo is centered there),
+   bottom left inside the sidebar on wide screens (see below). */
 .beta-banner {
   position: fixed;
-  top: 12px;
-  right: 12px;
+  top: 8px;
+  left: 8px;
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -41,10 +43,37 @@
 
 @media screen and (max-width: 600px) {
   .beta-banner {
-    top: 8px;
-    right: 8px;
     font-size: 11px;
     padding: 6px 10px;
+  }
+}
+
+/* Wide landscape screens: sit in the empty space at the bottom of the
+   sidebar, as wide as the sidebar minus its margins (sidebar.css widths) */
+@media screen and (min-width: 933px) and (orientation: landscape) {
+  .beta-banner {
+    top: auto;
+    bottom: 16px;
+    left: 12px;
+    max-width: calc(clamp(240px, 15vw, 320px) - 24px);
+    align-items: flex-start;
+    border-radius: 12px;
+  }
+
+  .beta-banner--collapsed {
+    border-radius: 999px;
+  }
+}
+
+@media screen and (min-width: 960px) and (max-height: 768px) and (orientation: landscape) {
+  .beta-banner {
+    max-width: calc(clamp(180px, 15vw, 240px) - 24px);
+  }
+}
+
+@media screen and (min-width: 1960px) and (orientation: landscape) {
+  .beta-banner {
+    max-width: calc(clamp(300px, 15vw, 400px) - 24px);
   }
 }
 
