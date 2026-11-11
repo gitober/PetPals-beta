@@ -14,6 +14,11 @@ const commentRouter = require("./routers/commentRouter");
 
 const app = express();
 
+// Beta: Render sits in front of the app as a proxy. Trusting one proxy hop
+// lets the server see each tester's own IP, so rate limits are per tester
+// instead of shared by everyone.
+app.set("trust proxy", 1);
+
 // Connect to MongoDB
 connectDB();
 
@@ -30,14 +35,14 @@ app.use(
   })
 );
 
-// Rate Limiting middleware
+// Rate Limiting middleware (only API calls count, not pages or images)
 if (process.env.NODE_ENV === "production") {
   const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // Limit each IP to 100 requests per windowMs
-    message: "Too many requests, please try again later.",
+    max: 500, // Per tester. The beta checklist alone checks in about 110 times per 15 minutes
+    message: { error: "Too many requests, please try again later." },
   });
-  app.use(limiter);
+  app.use("/api", limiter);
 }
 
 // Logging middleware (morgan)
