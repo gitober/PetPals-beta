@@ -27,12 +27,9 @@ import "../style/follow-modal.css";
 const UserProfile = () => {
   // User and Context Initialization
   const { username } = useParams();
-  const {
-    userId: loggedInUserId,
-    bioText,
-    profilePicture,
-    setProfilePicture,
-  } = useContext(UserContext);
+  // Only the logged-in user's id comes from context. The bio and picture shown
+  // on this page belong to the profile being viewed (userDetails below).
+  const { userId: loggedInUserId } = useContext(UserContext);
   const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_URL || "/api";
   const accessToken = localStorage.getItem("accessToken");
@@ -103,7 +100,6 @@ const UserProfile = () => {
             ? `${window.location.origin}${userData.profilePicture}`
             : userData.profilePicture;
 
-          setProfilePicture(profilePicture);
           setUserDetails({
             ...userData,
             profilePicture,
@@ -122,7 +118,7 @@ const UserProfile = () => {
     };
 
     fetchUserData();
-  }, [username, apiUrl, accessToken, setProfilePicture]);
+  }, [username, apiUrl, accessToken]);
 
   // Fetch User Posts
   useEffect(() => {
@@ -244,7 +240,7 @@ const UserProfile = () => {
                 <div className="userprofile-info">
                   <div className="userprofile-profilepicture-container">
                     <img
-                      src={sanitizeImageUrl(profilePicture, apiUrl)}
+                      src={sanitizeImageUrl(userDetails.profilePicture, apiUrl)}
                       alt="Profile Picture"
                       className="userprofile-profilepicture"
                       onError={(e) => (e.target.src = "/placeholder-image.png")}
@@ -290,7 +286,7 @@ const UserProfile = () => {
                         {userDetails.followingCount} Following
                       </p>
                     </div>
-                    <p className="userprofile-bio">{bioText}</p>
+                    <p className="userprofile-bio">{userDetails.bioText || "No bio yet."}</p>
                   </div>
                 </div>
                 <hr className="profilepage-separator" />
