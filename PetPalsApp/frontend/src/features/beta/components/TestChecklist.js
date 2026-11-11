@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { UserContext } from "../../user-context/hooks/UserContext";
+import { API_CHANGE_EVENT } from "../apiChangeEvents";
 import "../../../style/beta.css";
 
 // Beta: list of things to try, ticked off automatically from what the tester has done.
@@ -14,7 +15,11 @@ const TASKS = [
 ];
 
 const HIDDEN_ON = ["/", "/login", "/signup", "/thank-you"];
-const REFRESH_MS = 8000;
+// Backup check while nothing happens. Changes the tester makes trigger
+// an instant refresh through API_CHANGE_EVENT instead.
+const REFRESH_MS = 30000;
+// Short pause after a change, so the server has saved it before we ask
+const AFTER_CHANGE_MS = 300;
 
 const TestChecklist = () => {
   const apiUrl = process.env.REACT_APP_API_URL || "/api";
@@ -41,17 +46,27 @@ const TestChecklist = () => {
     }
   }, [apiUrl]);
 
-  // Refresh on every page change, every few seconds, and when the tab comes back into view
+  // Refresh on every page change, right after the tester changes something,
+  // when the tab comes back into view, and every 30 seconds as a backup
   useEffect(() => {
     if (hidden) return undefined;
+
+    let changeTimer;
+    const onChange = () => {
+      clearTimeout(changeTimer);
+      changeTimer = setTimeout(fetchProgress, AFTER_CHANGE_MS);
+    };
 
     fetchProgress();
     const timer = setInterval(fetchProgress, REFRESH_MS);
     window.addEventListener("focus", fetchProgress);
+    window.addEventListener(API_CHANGE_EVENT, onChange);
 
     return () => {
       clearInterval(timer);
+      clearTimeout(changeTimer);
       window.removeEventListener("focus", fetchProgress);
+      window.removeEventListener(API_CHANGE_EVENT, onChange);
     };
   }, [hidden, location.pathname, fetchProgress]);
 
