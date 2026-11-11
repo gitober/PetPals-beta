@@ -5,11 +5,12 @@ const connectDB = async () => {
     // Connect to MongoDB using the MONGO_URI from the .env file (use the TEST_MONGO_URI for testing)
     const mongoURI = process.env.NODE_ENV === "test" ? process.env.TEST_MONGO_URI : process.env.MONGO_URI;
 
-    console.log(`Attempting to connect to MongoDB (${process.env.NODE_ENV}): ${mongoURI}`);
+    // The address includes the database password, so it is never printed
+    console.log(`Attempting to connect to MongoDB (${process.env.NODE_ENV})`);
 
     const conn = await mongoose.connect(mongoURI);
 
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    console.log(`MongoDB Connected: ${conn.connection.host}, database: ${conn.connection.name}`);
   } catch (error) {
     console.error(`Error connecting to MongoDB: ${error.message}`);
     process.exit(1); // Exit with failure
