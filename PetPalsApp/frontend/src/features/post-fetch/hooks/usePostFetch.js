@@ -5,7 +5,6 @@ const usePostFetch = (apiUrl, setFeedItems, accessToken) => {
   // Fetch Posts
   useEffect(() => {
     const fetchPosts = async () => {
-      console.log("Access Token in usePostFetch:", accessToken); // Debug log for token
 
       if (!accessToken) {
         console.warn("Access token is missing or invalid in usePostFetch.");

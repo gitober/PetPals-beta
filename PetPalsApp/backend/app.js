@@ -57,12 +57,6 @@ app.use(
   })
 );
 
-// Log all incoming headers (for debugging)
-app.use((req, res, next) => {
-  console.log("Incoming Request Headers:", req.headers);
-  next();
-});
-
 // Middleware to parse JSON and URL-encoded payloads
 app.use(express.json()); // Parses incoming JSON payloads
 app.use(express.urlencoded({ extended: true })); // Parses URL-encoded payloads
