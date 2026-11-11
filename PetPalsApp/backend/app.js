@@ -4,6 +4,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
+const cookieParser = require("cookie-parser");
 const path = require("path");
 const connectDB = require("./config/db");
 const customMiddleware = require("./middleware/customMiddleware");
@@ -60,6 +61,7 @@ app.use(
 // Middleware to parse JSON and URL-encoded payloads
 app.use(express.json()); // Parses incoming JSON payloads
 app.use(express.urlencoded({ extended: true })); // Parses URL-encoded payloads
+app.use(cookieParser()); // Reads cookies, needed for the refresh token
 
 // Serve static files from the "uploads" directory
 app.use(
