@@ -1416,7 +1416,9 @@
 
 /* ...and the comment list takes the space that's left, and scrolls */
 .comment-popup .comment-popup-content {
+  box-sizing: border-box;
   width: 95%;
+  max-width: none;
   flex: 1 1 auto;
   min-height: 80px;
   max-height: none;
@@ -1426,6 +1428,7 @@
 
 /* Comment box as wide as the list above it */
 .comment-input {
+  box-sizing: border-box;
   width: 95%;
   max-width: none;
   margin: 10px auto 0;
