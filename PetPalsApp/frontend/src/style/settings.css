@@ -912,3 +912,23 @@
     font-size: clamp(18px, 1.8vw, 24px);
   }
 }
+/* Beta: let the settings page scroll when its content is taller than the
+   screen (it was cut off by fixed heights and overflow: hidden), and leave
+   room at the bottom so the beta checklist doesn't cover the last setting.
+   Placed last so it applies on every screen size. */
+.settings-page-container {
+  height: auto;
+  min-height: 100vh;
+  overflow: visible;
+}
+
+.settings-main-content {
+  overflow: visible;
+  padding-bottom: 180px;
+}
+
+.settings-feed {
+  height: auto;
+  min-height: calc(95vh - 100px);
+  padding-bottom: 32px;
+}
