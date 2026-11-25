@@ -122,6 +122,9 @@ function Login() {
               <p className="signUp signUp-disabled" id="signUpLink" aria-disabled="true">
                 Don't have an account? Sign up
               </p>
+              <p className="login-privacy">
+                <a href="/privacy" className="privacy-link">Privacy notice</a>
+              </p>
             </form>
           </div>
         </div>

@@ -298,3 +298,9 @@
 .thank-you-button:hover {
   background-color: #c198ff;
 }
+
+/* Privacy link at the bottom of the demo checklist */
+.test-checklist__privacy {
+  color: inherit;
+  text-decoration: underline;
+}
