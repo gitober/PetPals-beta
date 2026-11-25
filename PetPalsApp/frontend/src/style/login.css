@@ -111,11 +111,12 @@
 /* Beta: demo login button */
 .demo-login-button {
     width: 100%;
-    padding: clamp(10px, 1.6vw, 16px);
-    border: 2px solid #D6BAFF;
+    padding: clamp(12px, 2vw, 20px);
+    border: none;
     border-radius: 5px;
-    background-color: transparent;
-    color: #a777f0;
+    background-color: #7C3AED;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
     cursor: pointer;
     font-size: clamp(14px, 2vw, 22px);
     font-weight: bold;
@@ -123,7 +124,7 @@
 }
 
 .demo-login-button:hover:not(:disabled) {
-    background-color: #f3eaff;
+    background-color: #6D28D9;
 }
 
 .demo-login-button:disabled {
@@ -814,4 +815,29 @@
         font-size: 20px;
         margin-top: 18px;
     }
+}
+/* Beta: login form and sign up switched off, demo login only */
+.login-form input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.login-form input[type="submit"]:disabled,
+.login-form input[type="submit"]:disabled:hover {
+    background-color: #d9d9d9;
+    color: #8a8a8a;
+    cursor: not-allowed;
+}
+
+.signUp.signUp-disabled,
+.signUp.signUp-disabled:hover {
+    color: #b5b5b5;
+    cursor: not-allowed;
+}
+
+.demo-only-note {
+    text-align: center;
+    font-size: clamp(12px, 1.4vw, 16px);
+    color: #555;
+    margin-top: clamp(8px, 1vw, 12px);
 }
