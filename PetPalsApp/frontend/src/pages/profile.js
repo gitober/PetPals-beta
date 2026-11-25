@@ -34,7 +34,18 @@ const Profile = () => {
   const { username, profilePicture, bioText: defaultBioText, setProfilePicture, setBioText } = useContext(UserContext);
 
   // Settings and Hooks
-  const { bioText } = useSettings(apiUrl, navigate);
+  const { bioText, handleProfilePictureChange } = useSettings(apiUrl, navigate);
+  const [uploadingPicture, setUploadingPicture] = useState(false);
+
+  // Clicking your own profile picture opens the file picker and uploads the new photo
+  const handleProfilePictureSelect = async (e) => {
+    const file = e.target.files[0];
+    e.target.value = ""; // lets the same file be picked again
+    if (!file) return;
+    setUploadingPicture(true);
+    await handleProfilePictureChange(file);
+    setUploadingPicture(false);
+  };
 
   // State Variables
   const [loggedInUserId, setLoggedInUserId] = useState(null);
@@ -278,14 +289,31 @@ const Profile = () => {
             ) : (
               <div className="profile-page-feed">
                 <div className="profilepage-info">
-                  <div className="profilepage-profilepicture-container">
+                  <input
+                    type="file"
+                    id="profilePagePictureInput"
+                    accept="image/*"
+                    style={{ display: "none" }}
+                    onChange={handleProfilePictureSelect}
+                  />
+                  <button
+                    type="button"
+                    className="profilepage-profilepicture-container profilepage-profilepicture-editable"
+                    onClick={() => document.getElementById("profilePagePictureInput").click()}
+                    disabled={uploadingPicture}
+                    title="Change profile picture"
+                    aria-label="Change profile picture"
+                  >
                     <img
                       src={sanitizeImageUrl(profilePicture, apiUrl)}
                       alt="Profile Picture"
                       className="profilepage-profilepicture"
                       onError={(e) => (e.target.src = "/placeholder-image.png")}
                     />
-                  </div>
+                    <span className="profilepage-profilepicture-overlay">
+                      {uploadingPicture ? "Uploading..." : "Change photo"}
+                    </span>
+                  </button>
                   <div className="profilepage-details-container">
                     <div className="profilepage-username">{username}</div>
                     <div className="profilepage-follower-following">
