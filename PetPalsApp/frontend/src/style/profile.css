@@ -1133,3 +1133,31 @@
 .profilepage-empty-button:hover {
   background-color: #c198ff;
 }
+
+/* Own profile picture: click to change */
+.profilepage-profilepicture-editable {
+  position: relative;
+  padding: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.profilepage-profilepicture-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.profilepage-profilepicture-editable:hover .profilepage-profilepicture-overlay,
+.profilepage-profilepicture-editable:focus-visible .profilepage-profilepicture-overlay,
+.profilepage-profilepicture-editable:disabled .profilepage-profilepicture-overlay {
+  opacity: 1;
+}
