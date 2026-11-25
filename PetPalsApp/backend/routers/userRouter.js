@@ -59,7 +59,7 @@ router.post("/logout", requireAuth, logoutUser); // Log out a user (beta: also r
 // Beta: password reset is switched off. Test accounts have made-up emails,
 // so no reset emails are sent. Remove these two lines to switch it back on.
 const notInBeta = (req, res) =>
-  res.status(403).json({ error: "Password reset is not available in the beta." });
+  res.status(403).json({ error: "Password reset is not available in the demo." });
 router.post("/forgot-password", forgotPasswordLimiter, notInBeta);
 router.post("/reset-password", notInBeta);
 // router.post("/forgot-password", forgotPasswordLimiter, forgotPassword); // Request a password reset

@@ -43,12 +43,12 @@ const BetaBanner = () => {
       className={`beta-banner${collapsed ? " beta-banner--collapsed" : ""}`}
       onClick={toggle}
       aria-expanded={!collapsed}
-      title={collapsed ? "Show beta info" : "Hide beta info"}
+      title={collapsed ? "Show demo info" : "Hide demo info"}
     >
-      <span className="beta-banner__tag">BETA</span>
+      <span className="beta-banner__tag">DEMO</span>
       {!collapsed && (
         <span className="beta-banner__text">
-          Test version. Your account and posts are deleted when you log out.
+          Demo version. Your account and posts are deleted when you log out.
         </span>
       )}
     </button>

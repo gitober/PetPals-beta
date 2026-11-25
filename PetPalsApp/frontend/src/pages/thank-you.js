@@ -8,7 +8,7 @@ function ThankYou() {
     <div className="thank-you-page">
       <div className="thank-you-card">
         <img src="/img/navbar.png" alt="PetPals logo" className="thank-you-logo" />
-        <h1>Thank you for visiting the PetPals beta 🐾</h1>
+        <h1>Thank you for trying the PetPals demo 🐾</h1>
         <p>
           It was great having you here. Your test account and everything you posted have now
           been deleted, so nothing is left behind.

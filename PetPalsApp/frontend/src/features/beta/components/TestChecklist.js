@@ -95,7 +95,7 @@ const TestChecklist = () => {
         onClick={() => setOpen(!open)}
         aria-expanded={open}
       >
-        <span>Beta checklist</span>
+        <span>Demo checklist</span>
         <span className="test-checklist__count">
           {doneCount}/{TASKS.length}
         </span>

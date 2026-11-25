@@ -106,7 +106,7 @@ function Login() {
                 {demoLoading ? "Starting demo..." : "Try as demo user"}
               </button>
               <p className="demo-only-note">
-                This beta works with demo accounts only. Click the button above to try PetPals.
+                Logging in works with demo accounts only. Click the button above to try PetPals.
               </p>
               {error && <p className="login-error-message">{error}</p>}
               {/* Beta: password reset is switched off, so the link is hidden
