@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import sanitizeImageUrl from "../utils/sanitizeImageUrl";
 
@@ -139,6 +139,37 @@ function Home() {
     }
   };
 
+  // Post image: one click opens the poster's page, a double click likes the post
+  const clickTimers = useRef({});
+  const [heartPostId, setHeartPostId] = useState(null);
+
+  useEffect(() => {
+    const timers = clickTimers.current;
+    return () => Object.values(timers).forEach(clearTimeout);
+  }, []);
+
+  const handleImageClick = (item) => {
+    const key = item._id || item.localKey;
+
+    // Second click soon after the first: it's a double click, so like the post
+    if (clickTimers.current[key]) {
+      clearTimeout(clickTimers.current[key]);
+      delete clickTimers.current[key];
+      if (item._id && !likedPosts[item._id]) {
+        toggleLike(item._id); // a double click only likes, it never removes a like
+      }
+      setHeartPostId(key);
+      setTimeout(() => setHeartPostId((current) => (current === key ? null : current)), 800);
+      return;
+    }
+
+    // First click: wait a moment to see if a second click follows
+    clickTimers.current[key] = setTimeout(() => {
+      delete clickTimers.current[key];
+      handleUsernameClick(item.user_id?.username, item.user_id?._id);
+    }, 250);
+  };
+
   // Open Comment Popup for Selected Post
   const handleCommentIconClick = (image, id, comments) => {
     if (!id) {
@@ -191,7 +222,14 @@ function Home() {
                     >
                       {item.user_id?.username || "Unknown User"}
                     </p>
-                    <div className="home-feed-item-image-container">
+                    <div
+                      className="home-feed-item-image-container"
+                      onClick={() => handleImageClick(item)}
+                      title="Click to open profile, double-click to like"
+                    >
+                      {heartPostId === (item._id || item.localKey) && (
+                        <i className="fas fa-heart home-feed-item-heart" aria-hidden="true"></i>
+                      )}
                       <img
                         src={sanitizeImageUrl(item.image, apiUrl)}
                         alt="Post"

@@ -109,9 +109,6 @@
   transition: transform 0.3s ease-in-out;
 }
 
-.profilepage-feed-picture-container:hover img {
-  transform: scale(1.05);
-}
 
 /* Separator */
 .profilepage-separator {
@@ -490,9 +487,6 @@
     transition: transform 0.3s ease-in-out;
   }
 
-  .profilepage-feed-picture-container:hover img {
-    transform: scale(1.05);
-  }
 
   .profilepage-separator {
     border: 0;
@@ -984,9 +978,6 @@
     transition: transform 0.3s ease-in-out;
   }
 
-  .profilepage-feed-picture-container:hover img {
-    transform: scale(1.05);
-  }
 
   .profilepage-separator {
     border: 0;
@@ -1081,9 +1072,6 @@
     transition: transform 0.3s ease-in-out;
   }
 
-  .profilepage-feed-picture-container:hover img {
-    transform: scale(1.05);
-  }
 
   .profilepage-separator {
     border: 0;

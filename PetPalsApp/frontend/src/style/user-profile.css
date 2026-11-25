@@ -118,9 +118,6 @@
   transition: transform 0.3s ease-in-out;
 }
 
-.userprofile-feed-picture-container:hover img {
-  transform: scale(1.05);
-}
 
 .userprofile-separator {
   border: 0;
@@ -1116,9 +1113,6 @@
     transition: transform 0.3s ease-in-out;
   }
 
-  .userprofile-feed-picture-container:hover img {
-    transform: scale(1.05);
-  }
 
   .userprofile-separator {
     border: 0;
@@ -1220,9 +1214,6 @@
     transition: transform 0.3s ease-in-out;
   }
 
-  .userprofile-feed-picture-container:hover img {
-    transform: scale(1.05);
-  }
 
   .userprofile-separator {
     border: 0;

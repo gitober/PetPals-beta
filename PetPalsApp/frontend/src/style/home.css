@@ -79,6 +79,11 @@
 
 /* Image Container */
 .home-feed-item-image-container {
+  position: relative;
+  cursor: pointer;
+  touch-action: manipulation; /* a quick double tap likes instead of zooming the page */
+  -webkit-user-select: none;
+  user-select: none;
   width: 100%;
   height: auto;
   display: flex;
@@ -93,11 +98,6 @@
   height: 100%;
   object-fit: cover;
   border-radius: 8px;
-  transition: transform 0.2s ease-in-out;
-}
-
-.home-feed-item-image:hover {
-  transform: scale(1.05);
 }
 
 /* Post Content */
@@ -1049,5 +1049,31 @@
 @media screen and (min-width: 1960px) and (orientation: landscape) {
   .home-main-content {
     --home-offset: calc(clamp(300px, 15vw, 400px) + 24px);
+  }
+}
+
+/* Heart that pops up when a post is double-clicked */
+.home-feed-item-heart {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: clamp(60px, 12vw, 110px);
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  z-index: 1;
+  animation: home-heart-pop 0.8s ease-out forwards;
+}
+
+@keyframes home-heart-pop {
+  0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0; }
+  25% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+  70% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-feed-item-heart {
+    animation-duration: 0.01s;
   }
 }
