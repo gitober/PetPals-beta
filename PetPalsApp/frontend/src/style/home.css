@@ -1077,3 +1077,28 @@
     animation-duration: 0.01s;
   }
 }
+
+/* Instagram-style post frames, on every screen size (these override the
+   per-screen image rules above): the photo always fills the frame width,
+   small photos are stretched to fit, and very tall or wide photos are
+   trimmed to 4:5 or 1.91:1 (the shape is set in home.js when it loads). */
+.home-feed-item-image-container .home-feed-item-image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1; /* until the photo has loaded */
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+}
+
+.home-feed .home-feed-item-image-container {
+  width: min(100% - 32px, 560px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Let each post be as tall as its photo, so nothing is cut off or padded */
+.home-feed .home-feed-item {
+  min-height: 0;
+  max-height: none;
+}

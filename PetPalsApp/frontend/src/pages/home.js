@@ -235,6 +235,13 @@ function Home() {
                         alt="Post"
                         className="home-feed-item-image"
                         loading="lazy"
+                        onLoad={(e) => {
+                          // Like Instagram: keep the photo's shape, but no taller than 4:5 and no wider than 1.91:1
+                          const { naturalWidth: w, naturalHeight: h } = e.target;
+                          if (w && h) {
+                            e.target.style.aspectRatio = String(Math.min(Math.max(w / h, 0.8), 1.91));
+                          }
+                        }}
                         onError={(e) => (e.target.src = "/placeholder-image.png")}
                       />
                     </div>
