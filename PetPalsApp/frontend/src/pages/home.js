@@ -8,7 +8,6 @@ import LikeSection from "../features/likes/components/LikeSection";
 import Sidebar from "../features/sidebar/components/Sidebar";
 import SearchBar from "../features/search-bar/components/SearchBar";
 import SearchResults from "../features/search-bar/components/SearchResults";
-import BackToTop from "../features/back-to-top/components/BackToTop";
 import FollowList from "../features/follow/components/FollowList";
 
 import usePopupPost from "../features/posting/hooks/usePopupPost";
@@ -188,7 +187,6 @@ function Home() {
   return (
     <>
       <div className="home-page-container">
-        <BackToTop />
         <Sidebar openPopupPost={openPopupPost} />
         <div className="home-main-content">
           <div className="search-bar">

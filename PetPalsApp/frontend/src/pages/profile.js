@@ -7,7 +7,6 @@ import CommentPopup from "../features/comments/components/CommentPopup";
 import Sidebar from "../features/sidebar/components/Sidebar";
 import SearchBar from "../features/search-bar/components/SearchBar";
 import SearchResults from "../features/search-bar/components/SearchResults";
-import BackToTop from "../features/back-to-top/components/BackToTop";
 import FollowModal from "../features/follow/components/FollowModal";
 
 import { UserContext } from "../features/user-context/hooks/UserContext";
@@ -23,7 +22,6 @@ import "../style/sidebar.css";
 import "../style/post-popup.css";
 import "../style/comment-popup.css";
 import "../style/interaction.css";
-import "../style/back-to-top.css";
 import "../style/follow-modal.css";
 
 const Profile = () => {
@@ -267,7 +265,6 @@ const Profile = () => {
     <>
       <div className="profile-container">
         <div className="profile-page-container">
-          <BackToTop />
           <Sidebar openPopupPost={openPopupPost} />
           <div className="profile-page-main-content">
             <div className="search-bar">

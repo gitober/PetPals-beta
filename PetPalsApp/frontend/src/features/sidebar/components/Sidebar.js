@@ -1,12 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { UserContext } from "../../user-context/hooks/UserContext";
 import "../../../style/search-bar.css";
+import SlideMenu from "./SlideMenu";
 
 const Sidebar = ({ openPopupPost }) => {
   const { handleLogout } = useContext(UserContext);
+  const sidebarRef = useRef(null);
 
   return (
-    <div className="sidebar" style={{ padding: 0, margin: 0 }}>
+    <>
+    <SlideMenu sidebarRef={sidebarRef} openPopupPost={openPopupPost} handleLogout={handleLogout} />
+    <div className="sidebar" ref={sidebarRef} style={{ padding: 0, margin: 0 }}>
       <img srcSet="/img/navbar.png" alt="logo" />
       <ul>
         <li>
@@ -42,6 +46,7 @@ const Sidebar = ({ openPopupPost }) => {
         </a>
       </div>
     </div>
+    </>
   );
 };
 
