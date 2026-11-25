@@ -10,10 +10,12 @@ import Signup from "./features/sign-up/hooks/useSignUp";
 import { UserProvider } from "./features/user-context/hooks/UserContext";
 import BetaBanner from "./features/beta/components/BetaBanner";
 import TestChecklist from "./features/beta/components/TestChecklist";
+import ScrollToTop from "./utils/ScrollToTop";
 
 function App() {
   return (
       <BrowserRouter>
+        <ScrollToTop />
         <UserProvider>
           <BetaBanner />
           <TestChecklist />
