@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../style/privacy.css";
 
 // Details shown on the page. Change these in one place.
@@ -10,6 +10,36 @@ const ATLAS_REGION = "Amazon Web Services, Stockholm, Sweden";
 const LAST_UPDATED = "25 November 2026";
 
 function Privacy() {
+  const navigate = useNavigate();
+
+  // "Back to PetPals": return to the page the visitor came from on PetPals.
+  // If they opened this page directly, go to the feed when logged in,
+  // otherwise to the login page.
+  const goBack = () => {
+    let cameFromPetPals = false;
+    try {
+      cameFromPetPals =
+        Boolean(document.referrer) &&
+        new URL(document.referrer).origin === window.location.origin &&
+        window.history.length > 1;
+    } catch {
+      cameFromPetPals = false;
+    }
+
+    if (cameFromPetPals) {
+      navigate(-1);
+      return;
+    }
+
+    let loggedIn = false;
+    try {
+      loggedIn = Boolean(localStorage.getItem("accessToken"));
+    } catch {
+      loggedIn = false;
+    }
+    navigate(loggedIn ? "/home" : "/login");
+  };
+
   return (
     <div className="privacy-page">
       <article className="privacy-card">
@@ -140,9 +170,9 @@ function Privacy() {
         </section>
 
         <footer className="privacy-footer">
-          <Link to="/login" className="privacy-button">
+          <button type="button" onClick={goBack} className="privacy-button">
             Back to PetPals
-          </Link>
+          </button>
         </footer>
       </article>
     </div>
