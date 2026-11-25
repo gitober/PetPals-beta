@@ -6,6 +6,8 @@ import Profile from "./pages/profile";
 import Settings from "./pages/settings";
 import UserProfile from "./pages/user-profile";
 import ThankYou from "./pages/thank-you";
+import Privacy from "./pages/privacy";
+import "./style/privacy.css";
 import Signup from "./features/sign-up/hooks/useSignUp";
 import { UserProvider } from "./features/user-context/hooks/UserContext";
 import BetaBanner from "./features/beta/components/BetaBanner";
@@ -29,6 +31,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/userprofile/:username" element={<UserProfile />} />
             <Route path="/thank-you" element={<ThankYou />} />
+            <Route path="/privacy" element={<Privacy />} />
           </Routes>
         </UserProvider>
       </BrowserRouter>

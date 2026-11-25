@@ -14,7 +14,7 @@ const TASKS = [
   { key: "editedProfile", label: "Add a bio or profile picture" },
 ];
 
-const HIDDEN_ON = ["/", "/login", "/signup", "/thank-you"];
+const HIDDEN_ON = ["/", "/login", "/signup", "/thank-you", "/privacy"];
 // The checklist starts open after logging in, on every screen size, so no
 // tester misses it. If they fold it down, that choice is remembered for the
 // rest of the visit (cleared again on the next login, see useLogin.js).
@@ -164,6 +164,9 @@ const TestChecklist = () => {
               <p className="test-checklist__hint">Ticks update on their own as you go.</p>
               <p className="test-checklist__hint test-checklist__hint--fold">
                 Tap the bar to hide or show this list.
+              </p>
+              <p className="test-checklist__hint">
+                <a href="/privacy" className="test-checklist__privacy">Privacy notice</a>
               </p>
             </>
           )}

@@ -16,6 +16,9 @@ function ThankYou() {
         <Link to="/login" className="thank-you-button">
           Back to the start
         </Link>
+        <div>
+          <Link to="/privacy" className="privacy-link">Privacy notice</Link>
+        </div>
       </div>
     </div>
   );

@@ -841,3 +841,9 @@
     color: #555;
     margin-top: clamp(8px, 1vw, 12px);
 }
+
+/* Link to the privacy notice under the login form */
+.login-privacy {
+    text-align: center;
+    margin: 4px 0 0;
+}

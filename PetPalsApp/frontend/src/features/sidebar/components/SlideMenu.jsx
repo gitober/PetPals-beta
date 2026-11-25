@@ -114,6 +114,9 @@ const SlideMenu = ({ sidebarRef, openPopupPost, handleLogout }) => {
         >
           Log Out
         </button>
+        <a href="/privacy" className="privacy-link slide-menu-privacy" tabIndex={open ? 0 : -1}>
+          Privacy notice
+        </a>
       </nav>
     </>
   );
