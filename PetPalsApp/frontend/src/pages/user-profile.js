@@ -7,7 +7,6 @@ import SearchResults from "../features/search-bar/components/SearchResults";
 import CommentPopup from "../features/comments/components/CommentPopup";
 import FollowButton from "../features/follow/components/FollowButton";
 import PostPopup from "../features/posting/components/PostPopup";
-import BackToTop from "../features/back-to-top/components/BackToTop";
 import FollowModal from "../features/follow/components/FollowModal";
 
 import { UserContext } from "../features/user-context/hooks/UserContext";
@@ -21,7 +20,6 @@ import "../style/search-bar.css";
 import "../style/sidebar.css";
 import "../style/comment-popup.css";
 import "../style/interaction.css";
-import "../style/back-to-top.css";
 import "../style/follow-modal.css";
 
 const UserProfile = () => {
@@ -216,7 +214,6 @@ const UserProfile = () => {
     <>
       <div className={`userprofile-page-container ${popupCommentVisible ? "blur-for-comment" : ""}`}>
         <div className="userprofile-container">
-          <BackToTop />
           <Sidebar openPopupPost={openPopupPost} />
           <div className="userprofile-main-content">
             <div className="search-bar">

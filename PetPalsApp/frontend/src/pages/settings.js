@@ -6,7 +6,6 @@ import SearchBar from "../features/search-bar/components/SearchBar";
 import SearchResults from "../features/search-bar/components/SearchResults";
 import Sidebar from "../features/sidebar/components/Sidebar";
 import PostPopup from "../features/posting/components/PostPopup";
-import BackToTop from "../features/back-to-top/components/BackToTop";
 import SettingsPopup from "../features/settings/components/SettingsPopup";
 import ChangePasswordPopup from "../features/settings/components/ChangePasswordPopup";
 
@@ -16,7 +15,6 @@ import useSearch from "../features/search-bar/hooks/useSearch";
 import "../style/settings.css";
 import "../style/search-bar.css";
 import "../style/sidebar.css";
-import "../style/back-to-top.css";
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -109,7 +107,6 @@ const Settings = () => {
 
   return (
     <div className="settings-page-container">
-      <BackToTop />
       <Sidebar openPopupPost={openPopupPost} />
       <div className="settings-main-content">
         <div className="search-bar">
