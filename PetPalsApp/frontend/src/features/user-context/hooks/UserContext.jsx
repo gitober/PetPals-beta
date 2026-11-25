@@ -34,7 +34,7 @@ export const UserProvider = ({ children }) => {
         }
         setLoading(false);
         // Pages anyone can see without being logged in
-        const publicPages = ["/login", "/thank-you"];
+        const publicPages = ["/login", "/thank-you", "/privacy"];
         if (!publicPages.includes(window.location.pathname)) {
           window.location.href = "/login";
         }
