@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import "../style/privacy.css";
 
 // Details shown on the page. Change these in one place.
-const OPERATOR = "[NAME]"; // who runs the demo
-const CONTACT_EMAIL = "[EMAIL]";
-const RENDER_REGION = "[RENDER REGION]";
-const ATLAS_REGION = "[ATLAS REGION]";
+const OPERATOR = "Gitta, as a student project"; // who runs the demo
+const CONTACT_EMAIL = "petpals045@gmail.com";
+const RENDER_REGION = "Frankfurt, Germany";
+const ATLAS_REGION = "Amazon Web Services, Stockholm, Sweden";
 const LAST_UPDATED = "25 November 2026";
 
 function Privacy() {
@@ -81,7 +81,10 @@ function Privacy() {
 
         <section>
           <h2>5. Where it is kept and who helps</h2>
-          <p>Two service providers process data on our behalf, under their own data protection terms:</p>
+          <p>
+            Two service providers process data on our behalf, under their own data protection terms.
+            Both keep the data in the EU:
+          </p>
           <ul>
             <li>
               <strong>Render</strong> hosts the website and its logs ({RENDER_REGION}).
