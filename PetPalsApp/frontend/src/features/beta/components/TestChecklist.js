@@ -6,7 +6,7 @@ import "../../../style/beta.css";
 
 // Beta: list of things to try, ticked off automatically from what the tester has done.
 const TASKS = [
-  { key: "loggedIn", label: "Sign up or try the demo" },
+  { key: "loggedIn", label: "Try the demo" },
   { key: "posted", label: "Share a post with a photo" },
   { key: "liked", label: "Like a post" },
   { key: "commented", label: "Leave a comment" },

@@ -19,7 +19,7 @@ function Login() {
     setUsername,
     password,
     setPassword,
-    loginDisabled,
+    // loginDisabled, (beta: login form switched off)
     handleLoginSubmit,
     handleDemoLogin,
     demoLoading,
@@ -39,7 +39,7 @@ function Login() {
     handleSignupBlur,
     handleSignupSubmit,
     closeSignupPopup,
-    openSignupPopup,
+    // openSignupPopup, (beta: sign up switched off)
     fieldErrors,
   } = useSignup(apiUrl);
 
@@ -70,6 +70,7 @@ function Login() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
+                disabled /* Beta: demo login only */
               />
               <span style={{ position: "relative", width: "100%" }}>
                 <input
@@ -80,12 +81,13 @@ function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  disabled /* Beta: demo login only */
                   className="password-input"
                 />
                 <i
                   className={`fas ${showPassword ? "fa-eye" : "fa-eye-slash"
                     } toggle-password-icon`}
-                  onClick={() => setShowPassword(!showPassword)}
+                  style={{ pointerEvents: "none", opacity: 0.4 }}
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 ></i>
               </span>
@@ -93,7 +95,7 @@ function Login() {
                 type="submit"
                 id="loginButton"
                 value="Submit"
-                disabled={loginDisabled}
+                disabled /* Beta: demo login only (was: loginDisabled) */
               />
               <button
                 type="button"
@@ -103,6 +105,9 @@ function Login() {
               >
                 {demoLoading ? "Starting demo..." : "Try as demo user"}
               </button>
+              <p className="demo-only-note">
+                This beta works with demo accounts only. Click the button above to try PetPals.
+              </p>
               {error && <p className="login-error-message">{error}</p>}
               {/* Beta: password reset is switched off, so the link is hidden
               <p
@@ -113,7 +118,8 @@ function Login() {
                 Forgot your password?
               </p>
               */}
-              <p className="signUp" id="signUpLink" onClick={openSignupPopup}>
+              {/* Beta: sign up is switched off, demo login only (was: onClick={openSignupPopup}) */}
+              <p className="signUp signUp-disabled" id="signUpLink" aria-disabled="true">
                 Don't have an account? Sign up
               </p>
             </form>
