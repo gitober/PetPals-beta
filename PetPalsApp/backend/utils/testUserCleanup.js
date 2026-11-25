@@ -6,6 +6,7 @@ const path = require("path");
 const User = require("../models/userModel");
 const Post = require("../models/postModel");
 const Comment = require("../models/commentModel");
+const { deleteImage } = require("./imageStore");
 
 const UPLOADS_DIR = path.join(__dirname, "..", "uploads");
 
@@ -14,9 +15,16 @@ const TEST_USER_LIFETIME_MS = 60 * 60 * 1000;
 // How often the server looks for expired test accounts (10 minutes)
 const SWEEP_INTERVAL_MS = 10 * 60 * 1000;
 
-// Delete an uploaded image file, ignoring placeholders and anything outside uploads/
+// Delete an uploaded image (from the database, and an older copy on disk if
+// there is one), ignoring placeholders and anything outside uploads/
 const removeUploadedFile = async (imagePath) => {
   if (!imagePath || /^https?:\/\//.test(imagePath)) return;
+
+  try {
+    await deleteImage(imagePath);
+  } catch (error) {
+    console.error(`Could not delete stored image ${imagePath}:`, error.message);
+  }
 
   const fileName = path.basename(imagePath);
   if (!fileName || fileName === "placeholder-image.png") return;

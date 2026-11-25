@@ -1,6 +1,7 @@
 const express = require("express");
 const requireAuth = require("../middleware/requireAuth");
 const upload = require("../utils/multerConfig");
+const { deleteImage } = require("../utils/imageStore");
 const { formatImageUrl } = require("../utils/imageHelpers");
 const User = require("../models/userModel");
 const Post = require("../models/postModel");
@@ -100,6 +101,11 @@ router.put("/:postId", requireAuth, upload.single("image"), async (req, res) => 
       updatedData.image = `/uploads/${req.file.filename}`;
     }
 
+    // Remember the old image, so it can be removed if a new one replaces it
+    const oldPost = req.file
+      ? await Post.findOne({ _id: req.params.postId, user_id: req.user._id }).select("image")
+      : null;
+
     const updatedPost = await Post.findOneAndUpdate(
       { _id: req.params.postId, user_id: req.user._id },
       updatedData,
@@ -108,6 +114,12 @@ router.put("/:postId", requireAuth, upload.single("image"), async (req, res) => 
 
     if (!updatedPost) {
       return res.status(404).json({ error: "Post not found or unauthorized" });
+    }
+
+    if (oldPost && oldPost.image && oldPost.image !== updatedPost.image) {
+      deleteImage(oldPost.image).catch((error) =>
+        console.error("Could not delete old post image:", error.message)
+      );
     }
 
     res.status(200).json({
@@ -150,6 +162,11 @@ router.delete("/:postId", requireAuth, async (req, res) => {
     if (!post) {
       return res.status(404).json({ error: "Post not found or unauthorized" });
     }
+
+    // Remove the post's stored image too (seed images on disk are not touched)
+    deleteImage(post.image).catch((error) =>
+      console.error("Could not delete post image:", error.message)
+    );
 
     res.status(200).json({ message: "Post deleted successfully" });
   } catch (error) {

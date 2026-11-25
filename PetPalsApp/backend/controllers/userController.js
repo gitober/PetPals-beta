@@ -4,6 +4,7 @@ const validator = require("validator");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const { formatProfilePicture } = require("../utils/imageHelpers");
+const { deleteImage } = require("../utils/imageStore");
 const { createToken, createRefreshToken, refreshAccessToken } = require("../utils/authHelpers");
 const { deleteTestUser, TEST_USER_LIFETIME_MS } = require("../utils/testUserCleanup");
 
@@ -363,8 +364,16 @@ const updateProfilePicture = async (req, res) => {
     }
 
     if (req.file) {
+      const oldPicture = user.profilePicture;
       user.profilePicture = `uploads/${req.file.filename}`;
       await user.save();
+
+      // Remove the replaced picture from the database (seed files on disk stay)
+      if (oldPicture && oldPicture !== user.profilePicture) {
+        deleteImage(oldPicture).catch((error) =>
+          console.error("Could not delete old profile picture:", error.message)
+        );
+      }
 
       res.status(200).json({
         ...user.toObject(),

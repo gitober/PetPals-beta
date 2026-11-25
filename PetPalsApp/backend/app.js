@@ -7,6 +7,7 @@ const rateLimit = require("express-rate-limit");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const connectDB = require("./config/db");
+const { serveImage } = require("./utils/imageStore");
 const customMiddleware = require("./middleware/customMiddleware");
 const postRouter = require("./routers/postRouter");
 const userRouter = require("./routers/userRouter");
@@ -84,6 +85,8 @@ app.use(
     },
   })
 );
+// Images uploaded by users are stored in the database, not on disk
+app.get("/uploads/:filename", serveImage);
 
 // Log request details for debugging (only in development mode)
 if (process.env.NODE_ENV === "development") {
