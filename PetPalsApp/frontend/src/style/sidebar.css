@@ -752,3 +752,18 @@
   }
 }
 
+
+/* Small paws between the menu links. Their size and position come from the
+   links themselves (set in Sidebar.js), so they line up in both the
+   top-to-bottom and the side-by-side menu. */
+.sidebar ul li.sidebar-paw {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  color: #D6BAFF;
+  font-size: var(--paw-size, 14px);
+  line-height: 1;
+  transform: translateY(var(--paw-shift, 0px));
+  pointer-events: none;
+}
