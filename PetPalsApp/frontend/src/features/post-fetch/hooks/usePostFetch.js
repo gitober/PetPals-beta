@@ -36,7 +36,7 @@ const usePostFetch = (apiUrl, setFeedItems, accessToken) => {
         // Map data to sanitize image URLs and include likeCount and isLiked
         const mappedData = data.map((post) => ({
           _id: post._id,
-          content: post.content || "No content available",
+          content: post.content || "",
           image: sanitizeImageUrl(post.image, apiUrl), // Ensure sanitized image URLs
           likeCount: post.likeCount || 0, // Include like count
           isLiked: post.isLiked || false, // Include like status

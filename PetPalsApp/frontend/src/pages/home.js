@@ -238,9 +238,9 @@ function Home() {
                         onError={(e) => (e.target.src = "/placeholder-image.png")}
                       />
                     </div>
-                    <p className="home-feed-item-content">
-                      {item.content?.trim() || "No content provided"}
-                    </p>
+                    {item.content?.trim() && (
+                      <p className="home-feed-item-content">{item.content.trim()}</p>
+                    )}
                     <LikeSection
                       liked={likedPosts[item._id]}
                       toggleLike={toggleLike}
