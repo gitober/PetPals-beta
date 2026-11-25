@@ -4,7 +4,7 @@ const postSchema = new mongoose.Schema(
   {
     content: {
       type: String,
-      required: true,
+      default: "", // Text is optional, a post can be just an image
       trim: true,
       maxlength: 1000, // Optional: Limit content length
     },

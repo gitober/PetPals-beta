@@ -100,7 +100,7 @@ const PostPopup = ({
                     type="text"
                     value={postText}
                     onChange={handleChange}
-                    placeholder="Enter your text here"
+                    placeholder="Write a caption (optional)"
                     className="post-text-input"
                   />
                 </div>
