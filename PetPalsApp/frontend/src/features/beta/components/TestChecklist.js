@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { UserContext } from "../../user-context/hooks/UserContext";
 import { API_CHANGE_EVENT } from "../apiChangeEvents";
@@ -15,17 +15,21 @@ const TASKS = [
 ];
 
 const HIDDEN_ON = ["/", "/login", "/signup", "/thank-you"];
-// On phones and tablets the open checklist covers part of the posts, so it
-// only starts open on wide landscape screens (the sidebar layout, same as the
-// beta badge). Elsewhere it starts as just the "Beta checklist 1/6" bar.
-const WIDE_LAYOUT = "(min-width: 933px) and (orientation: landscape)";
+// The checklist starts open after logging in, on every screen size, so no
+// tester misses it. If they fold it down, that choice is remembered for the
+// rest of the visit (cleared again on the next login, see useLogin.js).
+export const CHECKLIST_OPEN_KEY = "demoChecklistOpen";
+// How long the folded bar pulses after a new tick
+const PULSE_MS = 1600;
 
 const startsOpen = () => {
   try {
-    return window.matchMedia(WIDE_LAYOUT).matches;
+    const saved = sessionStorage.getItem(CHECKLIST_OPEN_KEY);
+    if (saved !== null) return saved === "true";
   } catch {
-    return true;
+    // Storage not available, just start open
   }
+  return true;
 };
 // Backup check while nothing happens. Changes the tester makes trigger
 // an instant refresh through API_CHANGE_EVENT instead.
@@ -38,7 +42,18 @@ const TestChecklist = () => {
   const location = useLocation();
   const { handleLogout } = useContext(UserContext);
   const [progress, setProgress] = useState(null);
-  const [open, setOpen] = useState(startsOpen);
+  const [open, setOpenState] = useState(startsOpen);
+  const [pulse, setPulse] = useState(false);
+  const previousDone = useRef(null);
+
+  const setOpen = (next) => {
+    setOpenState(next);
+    try {
+      sessionStorage.setItem(CHECKLIST_OPEN_KEY, String(next));
+    } catch {
+      // Storage not available, the choice just won't be remembered
+    }
+  };
 
   const hidden = HIDDEN_ON.includes(location.pathname);
 
@@ -82,22 +97,45 @@ const TestChecklist = () => {
     };
   }, [hidden, location.pathname, fetchProgress]);
 
+  const doneCount = progress ? TASKS.filter((task) => progress[task.key]).length : 0;
+
+  // A new tick while the list is folded: make the bar pulse so it's noticed
+  useEffect(() => {
+    if (!progress) return undefined;
+    const before = previousDone.current;
+    previousDone.current = doneCount;
+    if (before === null || doneCount <= before || open) return undefined;
+
+    setPulse(true);
+    const timer = setTimeout(() => setPulse(false), PULSE_MS);
+    return () => clearTimeout(timer);
+  }, [doneCount, progress, open]);
+
   if (hidden || !progress) return null;
 
-  const doneCount = TASKS.filter((task) => progress[task.key]).length;
   const allDone = doneCount === TASKS.length;
 
   return (
-    <aside className={`test-checklist${open ? "" : " test-checklist--closed"}`}>
+    <aside
+      className={`test-checklist${open ? "" : " test-checklist--closed"}${
+        pulse ? " test-checklist--pulse" : ""
+      }`}
+    >
       <button
         type="button"
         className="test-checklist__header"
         onClick={() => setOpen(!open)}
         aria-expanded={open}
+        title={open ? "Hide the checklist" : "Show the checklist"}
       >
         <span>Demo checklist</span>
-        <span className="test-checklist__count">
-          {doneCount}/{TASKS.length}
+        <span className="test-checklist__header-right">
+          <span className="test-checklist__count">
+            {doneCount}/{TASKS.length}
+          </span>
+          <span className="test-checklist__arrow" aria-hidden="true">
+            {open ? "▾" : "▴"}
+          </span>
         </span>
       </button>
 
@@ -122,7 +160,12 @@ const TestChecklist = () => {
               </button>
             </div>
           ) : (
-            <p className="test-checklist__hint">Ticks update on their own as you go.</p>
+            <>
+              <p className="test-checklist__hint">Ticks update on their own as you go.</p>
+              <p className="test-checklist__hint test-checklist__hint--fold">
+                Tap the bar to hide or show this list.
+              </p>
+            </>
           )}
         </div>
       )}

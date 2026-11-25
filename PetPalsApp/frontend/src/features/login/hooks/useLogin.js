@@ -69,6 +69,12 @@ const useLogin = (apiUrl) => {
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("currentUserId", userId);
     localStorage.setItem("username", responseData.username);
+    // A new login: show the demo checklist open again
+    try {
+      sessionStorage.removeItem("demoChecklistOpen");
+    } catch {
+      // Storage not available, nothing to clear
+    }
 
     setContextUsername(responseData.username);
 

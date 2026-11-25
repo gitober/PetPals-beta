@@ -187,6 +187,51 @@
   background-color: #8f5ce6;
 }
 
+/* Arrow and count on the right side of the checklist bar */
+.test-checklist__header-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.test-checklist__arrow {
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* "Tap the bar..." hint only on smaller screens, where folding matters most */
+.test-checklist__hint--fold {
+  display: none;
+  margin-top: 4px;
+}
+
+@media screen and (max-width: 932px), screen and (orientation: portrait) {
+  .test-checklist__hint--fold {
+    display: block;
+  }
+}
+
+/* Short pulse when a task is ticked while the list is folded */
+.test-checklist--pulse .test-checklist__header {
+  animation: checklist-pulse 0.8s ease-in-out 2;
+}
+
+.test-checklist--pulse .test-checklist__count {
+  background-color: #7C3AED;
+}
+
+@keyframes checklist-pulse {
+  0%, 100% { background-color: #D6BAFF; transform: scale(1); }
+  50% { background-color: #a777f0; transform: scale(1.04); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .test-checklist--pulse .test-checklist__header {
+    animation: none;
+    background-color: #a777f0;
+  }
+}
+
 @media screen and (max-width: 600px) {
   .test-checklist {
     right: 8px;
