@@ -24,7 +24,7 @@ import "../style/interaction.css";
 
 function Home() {
   const navigate = useNavigate();
-  const apiUrl = process.env.REACT_APP_API_URL || "/api";
+  const apiUrl = import.meta.env.VITE_API_URL || "/api";
 
   // State Variables
   const [feedItems, setFeedItems] = useState([]);

@@ -29,7 +29,7 @@ const UserProfile = () => {
   // on this page belong to the profile being viewed (userDetails below).
   const { userId: loggedInUserId } = useContext(UserContext);
   const navigate = useNavigate();
-  const apiUrl = process.env.REACT_APP_API_URL || "/api";
+  const apiUrl = import.meta.env.VITE_API_URL || "/api";
   const accessToken = localStorage.getItem("accessToken");
 
   // State Management

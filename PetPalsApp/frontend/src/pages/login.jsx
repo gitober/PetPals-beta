@@ -11,7 +11,7 @@ import "../style/forgot-password-popup.css";
 import "../style/signup-popup.css";
 
 function Login() {
-  const apiUrl = process.env.REACT_APP_API_URL || "/api";
+  const apiUrl = import.meta.env.VITE_API_URL || "/api";
 
   // Login hook
   const {

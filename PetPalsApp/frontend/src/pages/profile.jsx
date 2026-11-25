@@ -25,7 +25,7 @@ import "../style/interaction.css";
 import "../style/follow-modal.css";
 
 const Profile = () => {
-  const apiUrl = process.env.REACT_APP_API_URL || "/api";
+  const apiUrl = import.meta.env.VITE_API_URL || "/api";
   const navigate = useNavigate();
 
   // User Context

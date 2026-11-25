@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../user-context/hooks/UserContext";
 
 const FollowList = ({
-  apiUrl = process.env.REACT_APP_API_URL || "/api", // Default value if not passed
+  apiUrl = import.meta.env.VITE_API_URL || "/api", // Default value if not passed
   accessToken,
   type,
 }) => {

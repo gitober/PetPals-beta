@@ -26,7 +26,7 @@ const useForgotPassword = (closeForgotPasswordPopup) => {
 
       // API Call to Trigger Password Reset via Backend
       setLoading(true);
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/users/forgot-password`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || "/api"}/users/forgot-password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

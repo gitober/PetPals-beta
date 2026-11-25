@@ -7,7 +7,7 @@ const useSearch = (initialValue = '', onSearch) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const apiUrl = process.env.REACT_APP_API_URL || "/api";
+  const apiUrl = import.meta.env.VITE_API_URL || "/api";
   const accessToken = localStorage.getItem("accessToken");
 
   // Fetch Users

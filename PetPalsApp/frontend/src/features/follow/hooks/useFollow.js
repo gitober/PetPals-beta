@@ -7,7 +7,7 @@ const useFollow = (username) => {
   const [followingCount, setFollowingCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
-  const apiUrl = process.env.REACT_APP_API_URL || "/api";
+  const apiUrl = import.meta.env.VITE_API_URL || "/api";
   const accessToken = localStorage.getItem("accessToken");
 
   // Fetch Follow Data
