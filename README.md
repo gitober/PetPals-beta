@@ -1,183 +1,30 @@
-<!-- PROJECT SHIELDS -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stars][stars-shield]](https://github.com/gitober/PetPals/stargazers)
-[![Issues][issues-shield]][issues-url]
+# PetPals Demo
 
-<!-- PROJECT HOME PAGE -->
-<div align="left">
-  <a href="https://github.com/gitober/PetPals">
-    <img src="images/pages/2.home-page.png" alt="Logo" width="500">
-  </a>
-  <h3>PetPals - Social Platform for Pet Owners</h3>
-  <p align="left">
-    A full-stack web application connecting pet owners to share moments, interact, and build a vibrant pet-loving community.
-    <br /><br />
-  </p>
-</div>
+A free, live demo of PetPals, a social app for pet owners.
 
----
+**Try it:** https://petpals-beta.onrender.com
+Click "Try as demo user". Your demo account and everything you post are deleted when you log out, or about an hour after you leave.
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol><a id="top"></a>
-    <li><a href="#about-the-project">About The Project</a></li>
-    <li><a href="#documentation">Documentation</a></li>
-    <li><a href="#technologies-used">Technologies Used</a></li>
-    <li><a href="#highlights-of-the-backend-and-frontend">Highlights of the Backend and Frontend</li>
-    <li><a href="#getting-started">Getting Started</a></li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#contributions-and-acknowledgments">Contributions and Acknowledgments</a></li>
-    <li><a href="#further-development-plan">Further Development Plan</a></li>
-    <li><a href="#license">License</a></li>
-    
-  </ol>
-</details>
+## About
 
----
+This is an updated copy of [PetPals](https://github.com/gitober/PetPals), a full-stack school project (React, Node.js, Express, MongoDB). The original stays as it was. This copy was used to see what Claude (Pro plan) can do with an old project: fix old problems, add features and put it online as a demo that costs nothing to run.
 
-## About The Project
+## What was done
 
-**PetPals** is a full-stack web application that began as a school project and has since evolved into an ongoing initiative to create a vibrant social platform for pet owners. With features like profile management, post sharing, commenting, and following systems, PetPals aims to foster a community where pet enthusiasts can connect and share their pet stories.
+- Made it a public demo: one-click demo accounts that clean themselves up, a demo checklist, a thank-you page and a privacy notice
+- New features: Instagram-style image frames, double-click to like, click a photo to open the profile, posts without text, a slide-in menu on small screens
+- Security: 377 GitHub alerts down to 0 by cleaning up packages, updating multer and moving from Create React App to Vite
+- Free hosting: Render (Frankfurt), MongoDB Atlas (Stockholm) for data and photos, and a free UptimeRobot monitor that keeps the free server awake
 
-This project represents a journey of learning, creativity, and passion for both web development and pet communities. The contributors have put great effort into making PetPals a feature-rich, user-friendly application.
+## How it was built with Claude
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+Claude worked directly in this repository from a cloud workspace, with access to this one repository only. Every change got its own branch and pull request, and I reviewed, tested and approved each merge before it went live. Claude read and wrote the code, ran commands, pushed branches, opened and merged pull requests, and looked up documentation. I installed packages on my laptop, shared Render logs and screenshots, and tested on the live site and my phone. Along the way Claude also suggested small ideas, like the heart pop-up on double-click and the pulsing demo checklist.
 
---- 
+## Tech
 
-## Documentation
+React 19, Vite, React Router, Node.js, Express, MongoDB (Mongoose, GridFS), JWT
 
-For detailed documentation, visit:
-- **[Project Overview](docs/project-overview.md)**
+## Credits and license
 
-- **[System Design](docs/architecture/system-design.md)**
-- **[Project Settings](docs/development/project-settings/settings-overview.md)**
-- **[Application Walkthrough](docs/user-documentation/application-features.md)**
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
----
-
-<!-- TECHNOLOGIES USED -->
-## Technologies Used
-
-PetPals was built with the following technologies:
-
-- ![React](https://img.shields.io/badge/React-Frontend-61DAFB?style=for-the-badge&logo=react&logoColor=white) **React**: Frontend library for building user interfaces.
-- ![Node.js](https://img.shields.io/badge/Node.js-Backend-339933?style=for-the-badge&logo=node.js&logoColor=white) **Node.js**: Backend runtime environment.
-- ![Express.js](https://img.shields.io/badge/Express.js-Backend-000000?style=for-the-badge&logo=express&logoColor=white) **Express.js**: Backend web framework.
-- ![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?style=for-the-badge&logo=mongodb&logoColor=white) **MongoDB**: NoSQL database.
-- ![JWT](https://img.shields.io/badge/JWT-Authentication-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white) **JWT**: Secure token-based authentication.
-- ![Multer](https://img.shields.io/badge/Multer-File%20Uploads-FC8804?style=for-the-badge&logo=multer&logoColor=white) **Multer**: File upload middleware for images.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
----
-
-### Highlights of the Backend and Frontend
-
-#### Backend Highlights:
-- **Secure Authentication**: Utilizes JSON Web Tokens (JWT) for robust and scalable user authentication.
-- **Modular Architecture**: Follows a clean separation of concerns with models, controllers, routers, and utility functions for better maintainability and scalability.
-- **Image Handling**: Incorporates Multer for seamless image uploads with validation and storage.
-- **Error Management**: Centralized error-handling middleware ensures consistent responses and debugging ease.
-- **Optimized Database Operations**: Implements Mongoose schemas with validation and indexing for performance.
-
-#### Frontend Highlights:
-- **Responsive Design**: Fully adaptable layouts for desktops, tablets, and mobile devices.
-- **Dynamic Interactions**: Real-time updates for likes, comments, and user follow/unfollow actions.
-- **User-Friendly Navigation**: Intuitive UI with clear navigation flows between pages.
-- **Global State Management**: Efficient state management for consistent app behavior using Context API or similar tools.
-- **Component-Based Architecture**: Modular React components for reusable and maintainable code.
-
-For a complete system architecture, refer to the [System Design](docs/architecture/system-design.md).
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
----
-
-<!-- GETTING STARTED -->
-## Getting Started
-
-To get started with PetPals, follow the detailed setup guide in the [Settings Overview](docs/development/project-settings/settings-overview.md), which covers environment configuration, dependencies, and more.
-
-### Quick Setup
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/gitober/PetPals.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd PetPalsApp
-   ```
-3. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
----
-
-<!-- USAGE -->
-## Usage
-
-PetPals allows users to:
-- Create and manage profiles.
-- Share posts with images and captions.
-- Interact with others through likes and comments.
-- Follow other pet owners to stay updated on their posts.
-
-For a complete guide, refer to the [Application Walkthrough](docs/user-documentation/application-features.md).
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
----
-
-### Contributions and Acknowledgments
-This project was envisioned and built by its creators, whose hard work and dedication laid the foundation for its success. Their efforts continue to inspire ongoing improvements and innovation.
-
-We value the hard work of everyone contributing to this project. Below are the creators and top contributors who have helped shape it:
-
-<a href="https://github.com/gitober/PetPals/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=gitober/PetPals" />
-</a>
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
----
-
-<!-- FURTHER DEVELOPMENT PLAN -->
-## Further Development Plan
-
-- Integration with cloud storage services for image uploads.
-- Implementation of push notifications for user interactions.
-- Adding a marketplace for pet-related products.
-- Advanced analytics for user activity and post engagement.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
----
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See [LICENSE.txt](LICENSE.txt) for details.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
----
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-[contributors-shield]: https://img.shields.io/github/contributors/gitober/PetPals.svg?style=for-the-badge
-[contributors-url]: https://github.com/gitober/PetPals/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/gitober/PetPals.svg?style=for-the-badge
-[forks-url]: https://github.com/gitober/PetPals/network/members
-[stars-shield]: https://img.shields.io/github/stars/gitober/PetPals.svg?style=for-the-badge
-[stars-url]: https://github.com/gitober/PetPals/stargazers
-[issues-shield]: https://img.shields.io/github/issues/gitober/PetPals.svg?style=for-the-badge
-[issues-url]: https://github.com/gitober/PetPals/issues
+Pet photos from Pexels and Pixabay. MIT License, see [LICENSE.txt](LICENSE.txt).
+Privacy notice: https://petpals-beta.onrender.com/privacy
