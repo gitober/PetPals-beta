@@ -4,7 +4,7 @@ const useLikes = () => {
   // State Management
   const [likeCounts, setLikeCounts] = useState({}); // Stores like counts for posts
   const [likedPosts, setLikedPosts] = useState({}); // Stores liked status for posts
-  const apiUrl = process.env.REACT_APP_API_URL || "/api";
+  const apiUrl = import.meta.env.VITE_API_URL || "/api";
 
   // Update Like State
   const updateLikeState = (postId, likeChange) => {

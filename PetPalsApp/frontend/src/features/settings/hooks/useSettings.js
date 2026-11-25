@@ -3,7 +3,7 @@ import { UserContext } from "../../user-context/hooks/UserContext";
 import sanitizeImageUrl from "../../../utils/sanitizeImageUrl";
 
 const useSettings = () => {
-  const apiUrl = process.env.REACT_APP_API_URL || "/api";
+  const apiUrl = import.meta.env.VITE_API_URL || "/api";
   const accessToken = localStorage.getItem("accessToken");
 
   const {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const apiUrl = process.env.REACT_APP_API_URL || "/api";
+const apiUrl = import.meta.env.VITE_API_URL || "/api";
 
 const usePopupComment = ({ postId, setFeedItems }) => {
   const [comments, setComments] = useState([]); // Comments for the current post

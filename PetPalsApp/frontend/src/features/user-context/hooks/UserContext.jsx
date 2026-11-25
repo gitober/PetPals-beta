@@ -9,7 +9,7 @@ export const UserProvider = ({ children }) => {
   const [profilePicture, setProfilePicture] = useState("/placeholder-image.png");
   const [loading, setLoading] = useState(true);
   const [loggedOut, setLoggedOut] = useState(false); 
-  const apiUrl = process.env.REACT_APP_API_URL || "/api";
+  const apiUrl = import.meta.env.VITE_API_URL || "/api";
 
   // Custom function to sync username to localStorage and state
   const setUsername = (newUsername) => {

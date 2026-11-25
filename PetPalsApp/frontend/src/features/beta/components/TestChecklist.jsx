@@ -38,7 +38,7 @@ const REFRESH_MS = 30000;
 const AFTER_CHANGE_MS = 300;
 
 const TestChecklist = () => {
-  const apiUrl = process.env.REACT_APP_API_URL || "/api";
+  const apiUrl = import.meta.env.VITE_API_URL || "/api";
   const location = useLocation();
   const { handleLogout } = useContext(UserContext);
   const [progress, setProgress] = useState(null);

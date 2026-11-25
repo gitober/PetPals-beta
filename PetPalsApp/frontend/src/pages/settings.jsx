@@ -18,7 +18,7 @@ import "../style/sidebar.css";
 
 const Settings = () => {
   const navigate = useNavigate();
-  const apiUrl = process.env.REACT_APP_API_URL || "/api";
+  const apiUrl = import.meta.env.VITE_API_URL || "/api";
 
   // User Settings Hooks
   const {

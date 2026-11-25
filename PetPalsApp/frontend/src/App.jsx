@@ -4,7 +4,7 @@ import Home from "./pages/home";
 import Login from "./pages/login";
 import Profile from "./pages/profile";
 import Settings from "./pages/settings";
-import UserProfile from "./pages/user-profile.js";
+import UserProfile from "./pages/user-profile";
 import ThankYou from "./pages/thank-you";
 import Signup from "./features/sign-up/hooks/useSignUp";
 import { UserProvider } from "./features/user-context/hooks/UserContext";
