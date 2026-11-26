@@ -18,7 +18,7 @@ This is an updated copy of [PetPals](https://github.com/gitober/PetPals), a full
 
 ## How it was built with Claude
 
-Claude worked directly in this repository from a cloud workspace, with access to this one repository only. Every change got its own branch and pull request, and I reviewed, tested and approved each merge before it went live. Claude read and wrote the code, ran commands, pushed branches, opened and merged pull requests, and looked up documentation. I installed packages on my laptop, shared Render logs and screenshots, and tested on the live site and my phone. Along the way Claude also suggested small ideas, like the heart pop-up on double-click and the pulsing demo checklist.
+Claude worked directly in this repository from a cloud workspace, with access to this one repository only. Every change got its own branch and pull request, and I reviewed, tested and approved each merge before it went live. Claude read the existing code and wrote the new changes on top of it, ran commands, pushed branches, opened and merged pull requests, and looked up documentation. I installed packages on my laptop, shared Render logs and screenshots, and tested on the live site and my phone. Along the way Claude also suggested small ideas, like the heart pop-up on double-click and the pulsing demo checklist.
 
 ## Tech
 
